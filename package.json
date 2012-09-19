@@ -2,5 +2,10 @@
 	"name": "Streak",
 	"version": "0.0.1",
 	"description": "wrapper for the Streak API",
-	"homepage":
+	"keywords": ["streak", "api", "wrapper", "client"],
+	"author": {
+		"name" : "Omar Ismail",
+		"email": "omar@streak.com"
+	},
+	"main": "streak.js"
 }
