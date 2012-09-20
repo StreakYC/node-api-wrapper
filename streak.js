@@ -1,4 +1,4 @@
-var https = require('https');
+var https = require('http');
 var querystring = require('querystring');
 
 (function(){
@@ -20,7 +20,7 @@ var querystring = require('querystring');
 
 	function _getRequestOptions(path){
 		return {
-			host: 'mailfoogae.appspot.com',
+			host: 'dev.mailfoogae.appspot.com',
 			path: '/api/v1/' + path,
 			auth: _authKey
 		};
@@ -36,7 +36,13 @@ var querystring = require('querystring');
 			response.on('end', function(){
 				if(cb){
 					if(!noParse){
-						cb(JSON.parse(str));
+						try{
+							cb(JSON.parse(str));
+						}
+						catch(err){
+							cb(str);
+						}
+
 					}
 					else{
 						cb(str);
@@ -60,11 +66,12 @@ var querystring = require('querystring');
 	}
 
 	function _put(path, data, cb, errCb){
-		var opts = _getRequestOptions(path);
+		var dstr = querystring.stringify(data);
+		var opts = _getRequestOptions(path + "?" + dstr);
 		opts.method = "PUT";
 
 		var request = https.request(opts, _requestCallback(cb, errCb));
-		request.write(querystring.stringify(data));
+
 		request.end();
 	}
 
@@ -76,10 +83,18 @@ var querystring = require('querystring');
 	}
 
 	function _post(path, data, cb, errCb){
+		var dstr = JSON.stringify(data);
 		var opts = _getRequestOptions(path);
+
 		opts.method = "POST";
+		opts.headers = {
+			'Content-Type': 'application/json',
+			'Content-Length': dstr.length
+		}
+
 		var request = https.request(opts, _requestCallback(cb, errCb));
-		request.write(querystring.stringify(data));
+
+		request.write(dstr);
 		request.end();
 	}
 
@@ -142,7 +157,7 @@ var querystring = require('querystring');
 		}
 	};
 
-	Streak.Pipelines.Stages = {
+	Streak.Pipelines.Fields = {
 		getAll: function(pipeKey, cb, errCb){
 			_get('pipelines/'+pipeKey+'/fields', cb, errCb);
 		},
@@ -189,6 +204,10 @@ var querystring = require('querystring');
 			_post('boxes/' + data.key, data, cb, errCb);
 		},
 
+		getFields: function(key, cb, errCb){
+			_get('boxes/' + key + '/fields', cb, errCb);
+		},
+
 		getReminders: function(key, cb, errCb){
 			_get('boxes/' + key + '/reminders', cb, errCb);
 		},
@@ -202,6 +221,20 @@ var querystring = require('querystring');
 		}
 	};
 
+	Streak.Boxes.Fields = {
+		getForBox: function(key, cb, errCb){
+			Streak.Boxes.getFields(key, cb, errCb);
+		},
+
+		getOne: function(boxKey, key, cb, errCb){
+			_get('boxes/' + boxKey + '/fields/' + key, cb, errCb);
+		},
+
+		update: function(boxKey, data, cb, errCb){
+			_post('boxes/' + boxKey + '/fields/' + data.key, data, cb, errCb);
+		}
+	};
+
 	Streak.Reminders = {
 		getForBox: function(key, cb, errCb){
 			Streak.Boxes.getReminders(key, cb, errCb);
@@ -211,7 +244,7 @@ var querystring = require('querystring');
 			_get('reminders/' + key, cb, errCb);
 		},
 
-		create: function(pipeKey, data, cb, errCb){
+		create: function(data, cb, errCb){
 			_put('reminders', data, cb, errCb);
 		},
 
@@ -221,28 +254,6 @@ var querystring = require('querystring');
 
 		update: function(data, cb, errCb){
 			_post('reminders/' + data.key, data, cb, errCb);
-		}
-	};
-
-	Streak.Comments = {
-		getForBox: function(key, cb, errCb){
-			Streak.Boxes.getComments(key, cb, errCb);
-		},
-
-		getOne: function(key, cb, errCb){
-			_get('comments/' + key, cb, errCb);
-		},
-
-		create: function(pipeKey, data, cb, errCb){
-			_put('comments', data, cb, errCb);
-		},
-
-		"delete": function(key, cb, errCb){
-			_delete('comments/' + key, cb, errCb);
-		},
-
-		update: function(data, cb, errCb){
-			_post('comments/' + data.key, data, cb, errCb);
 		}
 	};
 
@@ -256,12 +267,12 @@ var querystring = require('querystring');
 		},
 
 		getContents: function(key, cb, errCb){
-			_get('comments', data, cb, errCb, true); //don't parse JSON
+			_get('files/' + key + '/contents', cb, errCb, true); //don't parse JSON
 		}
-	},
+	};
 
 	Streak.search = function(query, cb, errCb){
-		_get('search/' + querystring.stringify(query), cb, errCb);
+		_get('search?query=' + encodeURIComponent(query), cb, errCb);
 	}
 
 }).call(this);

@@ -1,5 +1,5 @@
 {
-	"name": "Streak",
+	"name": "streak",
 	"version": "0.0.1",
 	"description": "wrapper for the Streak API",
 	"keywords": ["streak", "api", "wrapper", "client"],
