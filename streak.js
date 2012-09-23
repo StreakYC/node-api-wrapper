@@ -1,4 +1,4 @@
-var https = require('http');
+var https = require('https');
 var querystring = require('querystring');
 
 (function(){
@@ -20,7 +20,7 @@ var querystring = require('querystring');
 
 	function _getRequestOptions(path){
 		return {
-			host: 'dev.mailfoogae.appspot.com',
+			host: 'mailfoogae.appspot.com',
 			path: '/api/v1/' + path,
 			auth: _authKey
 		};
@@ -132,6 +132,23 @@ var querystring = require('querystring');
 
 		update: function(data, cb, errCb){
 			_post('pipelines/' + data.key, data, cb, errCb);
+		},
+
+		getFeed: function(key, activityFrom, specifics, detailLevel, cb, errCb){
+			var qs = "?";
+			if(activityFrom && activityFrom.length > 0){
+				qs += "activityFrom=" + encodeURIComponent(activityFrom.toString());
+			}
+
+			if(specifics && specifics.length > 0){
+				qs += "&specifics=" + encodeURIComponent(specifics.toString());
+			}
+
+			if(detailLevel){
+				qs += "&detailLevel=" + encodeURIComponent(detailLevel);
+			}
+
+			_get('pipelines/' + key + '/newsfeed' + qs, cb, errCb);
 		}
 	};
 
@@ -218,6 +235,23 @@ var querystring = require('querystring');
 
 		getFiles: function(key, cb, errCb){
 			_get('boxes/' + key + '/files', cb, errCb);
+		},
+
+		getFeed: function(key, activityFrom, specifics, detailLevel, cb, errCb){
+			var qs = "?";
+			if(activityFrom && activityFrom.length > 0){
+				qs += "activityFrom=" + encodeURIComponent(activityFrom.toString());
+			}
+
+			if(specifics && specifics.length > 0){
+				qs += "&specifics=" + encodeURIComponent(activities.toString());
+			}
+
+			if(detailLevel){
+				qs += "&=" + encodeURIComponent(detailLevel);
+			}
+
+			_get('boxes/' + key + '/newsfeed' + qs, cb, errCb);
 		}
 	};
 
