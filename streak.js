@@ -209,8 +209,8 @@ var querystring = require('querystring');
 			_get('boxes/' + key, cb, errCb);
 		},
 
-		create: function(data, cb, errCb){
-			_put('boxes', data, cb, errCb);
+		create: function(pipeKey, data, cb, errCb){
+			_put('pipelines/' + pipeKey + '/boxes', data, cb, errCb);
 		},
 
 		"delete": function(key, cb, errCb){
@@ -278,8 +278,8 @@ var querystring = require('querystring');
 			_get('reminders/' + key, cb, errCb);
 		},
 
-		create: function(data, cb, errCb){
-			_put('reminders', data, cb, errCb);
+		create: function(boxKey, data, cb, errCb){
+			_put('boxes/' + boxKey + '/reminders', data, cb, errCb);
 		},
 
 		"delete": function(key, cb, errCb){
