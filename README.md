@@ -8,6 +8,7 @@ To include the api just do the standard
 
 and then
 > var Streak = require('streak');
+
 > Streak.init('api_key');
 
 The actual API is very straightforward and the best way to know what functions are available is to read the source.
