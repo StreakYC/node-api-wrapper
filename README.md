@@ -7,7 +7,7 @@ To include the api just do the standard
 > node install streak
 
 and then
-> var Streak = require('streak');
+> var Streak = require('streakAPI');
 
 > Streak.init('api_key');
 

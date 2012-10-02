@@ -1,11 +1,12 @@
 {
-	"name": "streak",
-	"version": "0.0.1",
+	"name": "streakAPI",
+	"version": "0.1.0",
 	"description": "wrapper for the Streak API",
 	"keywords": ["streak", "api", "wrapper", "client"],
 	"author": {
 		"name" : "Omar Ismail",
 		"email": "omar@streak.com"
 	},
-	"main": "streak.js"
+	"main": "streak.js",
+	"repository": "https://github.com/StreakYC/node-api-wrapper"
 }

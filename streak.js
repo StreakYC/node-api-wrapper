@@ -9,10 +9,10 @@ var querystring = require('querystring');
 	    if (typeof module !== 'undefined' && module.exports) {
 	      exports = module.exports = Streak;
 	    }
-	    exports.Streak = Streak;
+	    exports.StreakAPI = Streak;
 	}
 	else {
-		root['Streak'] = Streak;
+		root['StreakAPI'] = Streak;
 	}
 
 	//private members and functions
