@@ -39,7 +39,6 @@ Streak API functions:
 	Streak.Pipelines.Fields.delete(pipelineKey, key, callback, errorCallback);
 	Streak.Pipelines.Fields.update(pipelineKey, data, callback, errorCallback);
 
-
 	//boxes
 	Streak.Boxes.getAll(callback, errorCallback);
 	Streak.Boxes.getForPipeline(boxKey, callback, errorCallback);
@@ -53,12 +52,10 @@ Streak API functions:
 	Streak.Boxes.getFiles(boxKey, callback, errorCallback);
 	Streak.Boxes.getFeed(boxKey, activityFrom, specifics, detailLevel, callback, errorCallback);
 
-
 	//box fields
 	Streak.Boxes.Fields.getForBox(boxKey, callback, errorCallback);
 	Streak.Boxes.Fields.getOne(boxKey, key, callback, errorCallback);
 	Streak.Boxes.Fields.update(boxKey, data, callback, errorCallback);
-
 
 	//reminders
 	Streak.Reminders.getForBox(boxKey, callback, errorCallback);
@@ -66,7 +63,6 @@ Streak API functions:
 	Streak.Reminders.create(boxKey, data, callback, errorCallback);
 	Streak.Reminders.delete(reminderKey, callback, errorCallback);
 	Streak.Reminders.update(data, callback, errorCallback);
-
 
 	//files
 	Streak.Files.getForBox(boxKey, callback, errorCallback);
