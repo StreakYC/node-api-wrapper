@@ -14,195 +14,64 @@ and then
 
 Streak API functions:
 
-    Streak.Me.get(callback, error_callback);
-	Streak.Pipelines
-		.getAll(cb, errCb)
-		.getOne(key, cb, errCb)
-		.getBoxes(key, cb, errCb)
+    Streak.Me.get(callback, errorCallback);
 
-		create: function(data, cb, errCb){
-			_put('pipelines', data, cb, errCb);
-		},
+    //pipeline functions
+	Streak.Pipelines.getAll(callback, errorCallback);
+	Streak.Pipelines.getOne(pipelineKey, callback, errorCallback);
+	Streak.Pipelines.getBoxes(pipelineKey, callback, errorCallback);
+	Streak.Pipelines.create(data, callback, errorCallback);
+	Streak.Pipelines.delete(pipelineKey, callback, errorCallback);
+	Streak.Pipelines.update(data, callback, errorCallback);
+	Streak.Pipelines.getFeed(pipelineKey, activityFrom, specifics, detailLevel, callback, errorCallback);
 
-		"delete": function(key, cb, errCb){
-			_delete('pipelines/' + key, cb, errCb);
-		},
+	//pipeline stages
+	Streak.Pipelines.Stages.getAll(pipelineKey, callback, errorCallback);
+	Streak.Pipelines.Stages.getOne(pipelineKey, key, callback, errorCallback);
+	Streak.Pipelines.Stages.create(pipelineKey, data, callback, errorCallback);
+	Streak.Pipelines.Stages.delete(pipelineKey, key, callback, errorCallback);
+	Streak.Pipelines.Stages.update(pipelineKey, data, callback, errorCallback);
 
-		update: function(data, cb, errCb){
-			_post('pipelines/' + data.key, data, cb, errCb);
-		},
+	//pipeline fields
+	Streak.Pipelines.Fields.getAll(pipelineKey, callback, errorCallback);
+	Streak.Pipelines.Fields.getOne(pipelineKey, key, callback, errorCallback);
+	Streak.Pipelines.Fields.create(pipelineKey, data, callback, errorCallback);
+	Streak.Pipelines.Fields.delete(pipelineKey, key, callback, errorCallback);
+	Streak.Pipelines.Fields.update(pipelineKey, data, callback, errorCallback);
 
-		getFeed: function(key, activityFrom, specifics, detailLevel, cb, errCb){
-			var qs = "?";
-			if(activityFrom && activityFrom.length > 0){
-				qs += "activityFrom=" + encodeURIComponent(activityFrom.toString());
-			}
 
-			if(specifics && specifics.length > 0){
-				qs += "&specifics=" + encodeURIComponent(specifics.toString());
-			}
+	//boxes
+	Streak.Boxes.getAll(callback, errorCallback);
+	Streak.Boxes.getForPipeline(boxKey, callback, errorCallback);
+	Streak.Boxes.getOne(boxKey, callback, errorCallback);
+	Streak.Boxes.create(pipelineKey, data, callback, errorCallback);
+	Streak.Boxes.delete(key, callback, errorCallback);
+	Streak.Boxes.update(data, callback, errorCallback);
+	Streak.Boxes.getFields(boxKey, callback, errorCallback);
+	Streak.Boxes.getReminders(boxKey, callback, errorCallback);
+	Streak.Boxes.getComments(boxKey, callback, errorCallback);
+	Streak.Boxes.getFiles(boxKey, callback, errorCallback);
+	Streak.Boxes.getFeed(boxKey, activityFrom, specifics, detailLevel, callback, errorCallback);
 
-			if(detailLevel){
-				qs += "&detailLevel=" + encodeURIComponent(detailLevel);
-			}
 
-			_get('pipelines/' + key + '/newsfeed' + qs, cb, errCb);
-		}
-	};
+	//box fields
+	Streak.Boxes.Fields.getForBox(boxKey, callback, errorCallback);
+	Streak.Boxes.Fields.getOne(boxKey, key, callback, errorCallback);
+	Streak.Boxes.Fields.update(boxKey, data, callback, errorCallback);
 
-	Streak.Pipelines.Stages = {
-		getAll: function(pipeKey, cb, errCb){
-			_get('pipelines/'+pipeKey+'/stages', cb, errCb);
-		},
 
-		getOne: function(pipeKey, key, cb, errCb){
-			_get('pipelines/'+pipeKey +'/stages/' + key, cb, errCb);
-		},
+	//reminders
+	Streak.Reminders.getForBox(boxKey, callback, errorCallback);
+	Streak.Reminders.getOne(reminderKey, callback, errorCallback);
+	Streak.Reminders.create(boxKey, data, callback, errorCallback);
+	Streak.Reminders.delete(reminderKey, callback, errorCallback);
+	Streak.Reminders.update(data, callback, errorCallback);
 
-		create: function(pipeKey, data, cb, errCb){
-			_put('pipelines/' + pipeKey + '/stages', data, cb, errCb);
-		},
 
-		"delete": function(pipeKey, key, cb, errCb){
-			_delete('pipelines/' +pipeKey +'/stages/' + key, cb, errCb);
-		},
+	//files
+	Streak.Files.getForBox(boxKey, callback, errorCallback);
+	Streak.Files.getOne(fileKey, callback, errorCallback);
+	Streak.Files.getContents(fileKey, callback, errorCallback);
 
-		update: function(pipeKey, data, cb, errCb){
-			_post('pipelines/' + pipeKey + '/stages/' + data.key, data, cb, errCb);
-		}
-	};
-
-	Streak.Pipelines.Fields = {
-		getAll: function(pipeKey, cb, errCb){
-			_get('pipelines/'+pipeKey+'/fields', cb, errCb);
-		},
-
-		getOne: function(pipeKey, key, cb, errCb){
-			_get('pipelines/'+pipeKey +'/fields/' + key, cb, errCb);
-		},
-
-		create: function(pipeKey, data, cb, errCb){
-			_put('pipelines/' + pipeKey + '/fields', data, cb, errCb);
-		},
-
-		"delete": function(pipeKey, key, cb, errCb){
-			_delete('pipelines/' +pipeKey +'/fields/' + key, cb, errCb);
-		},
-
-		update: function(pipeKey, data, cb, errCb){
-			_post('pipelines/' + pipeKey + '/fields/' + data.key, data, cb, errCb);
-		}
-	};
-
-	Streak.Boxes = {
-		getAll: function(cb, errCb){
-			_get('boxes', cb, errCb);
-		},
-
-		getForPipeline: function(key, cb, errCb){
-			Streak.Pipelines.getBoxes(key, cb, errCb);
-		},
-
-		getOne: function(key, cb, errCb){
-			_get('boxes/' + key, cb, errCb);
-		},
-
-		create: function(pipeKey, data, cb, errCb){
-			_put('pipelines/' + pipeKey + '/boxes', data, cb, errCb);
-		},
-
-		"delete": function(key, cb, errCb){
-			_delete('boxes/' + key, cb, errCb);
-		},
-
-		update: function(data, cb, errCb){
-			_post('boxes/' + data.key, data, cb, errCb);
-		},
-
-		getFields: function(key, cb, errCb){
-			_get('boxes/' + key + '/fields', cb, errCb);
-		},
-
-		getReminders: function(key, cb, errCb){
-			_get('boxes/' + key + '/reminders', cb, errCb);
-		},
-
-		getComments: function(key, cb, errCb){
-			_get('boxes/' + key + '/comments', cb, errCb);
-		},
-
-		getFiles: function(key, cb, errCb){
-			_get('boxes/' + key + '/files', cb, errCb);
-		},
-
-		getFeed: function(key, activityFrom, specifics, detailLevel, cb, errCb){
-			var qs = "?";
-			if(activityFrom && activityFrom.length > 0){
-				qs += "activityFrom=" + encodeURIComponent(activityFrom.toString());
-			}
-
-			if(specifics && specifics.length > 0){
-				qs += "&specifics=" + encodeURIComponent(activities.toString());
-			}
-
-			if(detailLevel){
-				qs += "&=" + encodeURIComponent(detailLevel);
-			}
-
-			_get('boxes/' + key + '/newsfeed' + qs, cb, errCb);
-		}
-	};
-
-	Streak.Boxes.Fields = {
-		getForBox: function(key, cb, errCb){
-			Streak.Boxes.getFields(key, cb, errCb);
-		},
-
-		getOne: function(boxKey, key, cb, errCb){
-			_get('boxes/' + boxKey + '/fields/' + key, cb, errCb);
-		},
-
-		update: function(boxKey, data, cb, errCb){
-			_post('boxes/' + boxKey + '/fields/' + data.key, data, cb, errCb);
-		}
-	};
-
-	Streak.Reminders = {
-		getForBox: function(key, cb, errCb){
-			Streak.Boxes.getReminders(key, cb, errCb);
-		},
-
-		getOne: function(key, cb, errCb){
-			_get('reminders/' + key, cb, errCb);
-		},
-
-		create: function(boxKey, data, cb, errCb){
-			_put('boxes/' + boxKey + '/reminders', data, cb, errCb);
-		},
-
-		"delete": function(key, cb, errCb){
-			_delete('reminders/' + key, cb, errCb);
-		},
-
-		update: function(data, cb, errCb){
-			_post('reminders/' + data.key, data, cb, errCb);
-		}
-	};
-
-	Streak.Files = {
-		getForBox: function(key, cb, errCb){
-			Streak.Boxes.getFiles(key, cb, errCb);
-		},
-
-		getOne: function(key, cb, errCb){
-			_get('files/' + key, cb, errCb);
-		},
-
-		getContents: function(key, cb, errCb){
-			_get('files/' + key + '/contents', cb, errCb, true); //don't parse JSON
-		}
-	};
-
-	Streak.search = function(query, cb, errCb){
-		_get('search?query=' + encodeURIComponent(query), cb, errCb);
-	}
+	//search
+	Streak.search(query, callback, errorCallback);
