@@ -1,7 +1,7 @@
 NodeJS Wrapper for Streak API
 ================
 
-NodeJS package that acts as a thin wrapper over the Streak API. You can checkout the full API documentation at https://www.steak.com/api
+NodeJS package that acts as a thin wrapper over the Streak API. You can checkout the full API documentation at https://www.streak.com/api
 
 To include the api just do the standard
 
