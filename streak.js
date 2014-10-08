@@ -232,6 +232,10 @@ var querystring = require('querystring');
 		getComments: function(key, cb, errCb){
 			_get('boxes/' + key + '/comments', cb, errCb);
 		},
+		
+		createComment: function(key, data, cb, errCb){
+            		_put('boxes/' + key + '/comments', data, cb, errCb);
+		},
 
 		getFiles: function(key, cb, errCb){
 			_get('boxes/' + key + '/files', cb, errCb);
