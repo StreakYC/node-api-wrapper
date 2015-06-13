@@ -62,6 +62,7 @@ var querystring = require('querystring');
 	function _get(path, cb, errCb, noParse){
 		var opts = _getRequestOptions(path);
 		var request = https.request(opts, _requestCallback(cb, errCb, noParse));
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -71,7 +72,8 @@ var querystring = require('querystring');
 		opts.method = "PUT";
 
 		var request = https.request(opts, _requestCallback(cb, errCb));
-
+		
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -79,6 +81,7 @@ var querystring = require('querystring');
 		var opts = _getRequestOptions(path);
 		opts.method = "DELETE";
 		var request = https.request(opts, _requestCallback(cb, errCb));
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -95,6 +98,7 @@ var querystring = require('querystring');
 		var request = https.request(opts, _requestCallback(cb, errCb));
 
 		request.write(dstr);
+		request.on('error', errCb)
 		request.end();
 	}
 
