@@ -126,6 +126,15 @@ var querystring = require('querystring');
 			_get('pipelines/' + key + '/boxes', cb, errCb);
 		},
 
+		/**
+		 * NOTE: this method is currently undocumented, although Streak support has confirmed
+		 * to me that it is indeed a valid call, the lack of documentation is worth noting and 
+		 * keeping an eye on! @nandanrao
+		 */
+		getBoxesInStage: function (key, stageKey, cb, errCb){
+			_get('pipelines/' + key + '/boxes?stageKey='+ encodeURIComponent(stageKey), cb, errCb);
+		},
+
 		create: function(data, cb, errCb){
 			_put('pipelines', data, cb, errCb);
 		},
