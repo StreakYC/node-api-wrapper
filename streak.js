@@ -62,6 +62,7 @@ var querystring = require('querystring');
 	function _get(path, cb, errCb, noParse){
 		var opts = _getRequestOptions(path);
 		var request = https.request(opts, _requestCallback(cb, errCb, noParse));
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -71,7 +72,8 @@ var querystring = require('querystring');
 		opts.method = "PUT";
 
 		var request = https.request(opts, _requestCallback(cb, errCb));
-
+		
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -79,6 +81,7 @@ var querystring = require('querystring');
 		var opts = _getRequestOptions(path);
 		opts.method = "DELETE";
 		var request = https.request(opts, _requestCallback(cb, errCb));
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -95,6 +98,7 @@ var querystring = require('querystring');
 		var request = https.request(opts, _requestCallback(cb, errCb));
 
 		request.write(dstr);
+		request.on('error', errCb)
 		request.end();
 	}
 
@@ -120,6 +124,15 @@ var querystring = require('querystring');
 
 		getBoxes: function(key, cb, errCb){
 			_get('pipelines/' + key + '/boxes', cb, errCb);
+		},
+
+		/**
+		 * NOTE: this method is currently undocumented, although Streak support has confirmed
+		 * to me that it is indeed a valid call, the lack of documentation is worth noting and 
+		 * keeping an eye on! @nandanrao
+		 */
+		getBoxesInStage: function (key, stageKey, cb, errCb){
+			_get('pipelines/' + key + '/boxes?stageKey='+ encodeURIComponent(stageKey), cb, errCb);
 		},
 
 		create: function(data, cb, errCb){
