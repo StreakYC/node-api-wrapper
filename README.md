@@ -2,7 +2,7 @@
 
 NodeJS package that acts as a thin wrapper over the Streak API (https://www.streak.com/api).
 
-To include the api just do the standard
+To use the API, just do the standard
 
     $ npm install --save streakapi
 
@@ -45,7 +45,7 @@ All methods return promises.
 
     //boxes
     streak.Boxes.getAll();
-    streak.Boxes.getForPipeline(boxKey);
+    streak.Boxes.getForPipeline(pipelineKey);
     streak.Boxes.getOne(boxKey);
     streak.Boxes.create(pipelineKey, data);
     streak.Boxes.delete(key);
