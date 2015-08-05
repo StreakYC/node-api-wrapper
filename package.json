@@ -1,12 +1,27 @@
 {
-	"name": "streakapi",
-	"version": "0.1.0",
-	"description": "wrapper for the Streak API",
-	"keywords": ["streak", "api", "wrapper", "client"],
-	"author": {
-		"name" : "Omar Ismail",
-		"email": "omar@streak.com"
-	},
-	"main": "streak.js",
-	"repository": "https://github.com/StreakYC/node-api-wrapper"
+  "name": "streakapi",
+  "version": "0.1.0",
+  "description": "wrapper for the Streak API",
+  "keywords": [
+    "streak",
+    "api",
+    "wrapper",
+    "client"
+  ],
+  "author": {
+    "name": "Omar Ismail",
+    "email": "omar@streak.com"
+  },
+  "scripts": {
+    "prepublish": "babel -s inline --optional runtime -d js/ src/",
+    "test": "babel-node test/prodtest.js"
+  },
+  "main": "js/index.js",
+  "repository": "https://github.com/StreakYC/node-api-wrapper",
+  "devDependencies": {
+    "babel": "^5.8.20"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.8.20"
+  }
 }
