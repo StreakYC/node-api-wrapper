@@ -72,7 +72,7 @@ var querystring = require('querystring');
 		opts.method = "PUT";
 
 		var request = https.request(opts, _requestCallback(cb, errCb));
-		
+
 		request.on('error', errCb)
 		request.end();
 	}
@@ -92,7 +92,7 @@ var querystring = require('querystring');
 		opts.method = "POST";
 		opts.headers = {
 			'Content-Type': 'application/json',
-			'Content-Length': dstr.length
+			'Content-Length': Buffer.byteLength(dstr)
 		}
 
 		var request = https.request(opts, _requestCallback(cb, errCb));
@@ -128,7 +128,7 @@ var querystring = require('querystring');
 
 		/**
 		 * NOTE: this method is currently undocumented, although Streak support has confirmed
-		 * to me that it is indeed a valid call, the lack of documentation is worth noting and 
+		 * to me that it is indeed a valid call, the lack of documentation is worth noting and
 		 * keeping an eye on! @nandanrao
 		 */
 		getBoxesInStage: function (key, stageKey, cb, errCb){
@@ -245,7 +245,7 @@ var querystring = require('querystring');
 		getComments: function(key, cb, errCb){
 			_get('boxes/' + key + '/comments', cb, errCb);
 		},
-		
+
 		createComment: function(key, data, cb, errCb){
             		_put('boxes/' + key + '/comments', data, cb, errCb);
 		},
