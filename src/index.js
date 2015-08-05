@@ -11,98 +11,133 @@ class ConnHelper {
     this._authKey = authKey;
   }
 
-  getRequestOptions(path: string): Object {
+  _getRequestOptions(method: string, path: string, headers: Object={}, encoding: ?string='utf8'): Object {
     return {
+      method, headers, encoding,
       host: 'mailfoogae.appspot.com',
       path: '/api/v1/' + path,
       auth: this._authKey
     };
   }
 
-  requestCallback(cb: Function, errCb: Function, noParse: boolean=false): Function {
-    return function(response) {
-      var str = '';
-      response.on('data', function(chunk) {
-        str += chunk;
+  _parseResponse(response: https.IncomingMessage): Promise {
+    return new Promise((resolve, reject) => {
+      var strs: string[] = [];
+      response.on('data', (chunk: string) => {
+        strs.push(chunk);
       });
-
-      response.on('end', function() {
+      response.on('end', () => {
         try {
+          var str = strs.join('');
           if (response.statusCode === 200) {
-            if (!noParse) {
-              cb(JSON.parse(str));
-            } else {
-              cb(str);
-            }
+            resolve(JSON.parse(str));
           } else {
             var json;
             var errorMessage = `Response code ${response.statusCode}`;
-            if (!noParse) {
-              try {
-                json = JSON.parse(str);
-                if (json && json.error) {
-                  errorMessage = json.error;
-                }
-              } catch(err) {}
-            }
-            errCb(Object.assign((new Error(errorMessage): Object), {
+            try {
+              json = JSON.parse(str);
+              if (json && json.error) {
+                errorMessage = json.error;
+              }
+            } catch(err) {}
+            reject(Object.assign((new Error(errorMessage): Object), {
               str, json,
               statusCode: response.statusCode,
               headers: response.headers
             }));
           }
         } catch(err) {
-          errCb(err);
+          reject(err);
         }
       });
-
-      response.on('error', function(error) {
-        return errCb(error);
-      })
-    }
+    });
   }
 
-  get(path: string, cb: Function, errCb: Function, noParse:boolean=false) {
-    var opts = this.getRequestOptions(path);
-    var request = https.request(opts, this.requestCallback(cb, errCb, noParse));
-    request.on('error', errCb)
-    request.end();
+  _plainResponse(response: https.IncomingMessage): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      var chunks: Buffer[] = [];
+      response.on('data', (chunk: Buffer) => {
+        chunks.push(chunk);
+      });
+      response.on('end', () => {
+        try {
+          var buf = Buffer.concat(chunks);
+          if (response.statusCode === 200) {
+            resolve(buf);
+          } else {
+            var errorMessage = `Response code ${response.statusCode}`;
+            reject(Object.assign((new Error(errorMessage): Object), {
+              buf,
+              statusCode: response.statusCode,
+              headers: response.headers
+            }));
+          }
+        } catch(err) {
+          reject(err);
+        }
+      });
+    });
   }
 
-  put(path: string, data: any, cb: Function, errCb: Function) {
-    var dstr = querystring.stringify(data);
-    var opts = this.getRequestOptions(path + "?" + dstr);
-    opts.method = "PUT";
-
-    var request = https.request(opts, this.requestCallback(cb, errCb));
-
-    request.on('error', errCb)
-    request.end();
+  get(path: string): Promise {
+    return new Promise((resolve, reject) => {
+      var opts = this._getRequestOptions('GET', path);
+      var request = https.request(opts, res => {
+        resolve(this._parseResponse(res));
+      });
+      request.on('error', reject);
+      request.end();
+    });
   }
 
-  delete(path: string, cb: Function, errCb: Function) {
-    var opts = this.getRequestOptions(path);
-    opts.method = "DELETE";
-    var request = https.request(opts, this.requestCallback(cb, errCb));
-    request.on('error', errCb)
-    request.end();
+  getNoParse(path: string): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      var opts = this._getRequestOptions('GET', path, undefined, null);
+      var request = https.request(opts, res => {
+        resolve(this._plainResponse(res));
+      });
+      request.on('error', reject);
+      request.end();
+    });
   }
 
-  post(path: string, data: any, cb: Function, errCb: Function) {
-    var dstr = JSON.stringify(data);
-    var opts = this.getRequestOptions(path);
+  put(path: string, data: Object): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      var dstr = querystring.stringify(data);
+      var opts = this._getRequestOptions('PUT', path + "?" + dstr);
+      var request = https.request(opts, res => {
+        resolve(this._parseResponse(res));
+      });
+      request.on('error', reject);
+      request.end();
+    });
+  }
 
-    opts.method = "POST";
-    opts.headers = {
-      'Content-Type': 'application/json',
-      'Content-Length': dstr.length
-    }
+  delete(path: string): Promise {
+    return new Promise((resolve, reject) => {
+      var opts = this._getRequestOptions('DELETE', path);
+      var request = https.request(opts, res => {
+        resolve(this._parseResponse(res));
+      });
+      request.on('error', reject);
+      request.end();
+    });
+  }
 
-    var request = https.request(opts, this.requestCallback(cb, errCb));
-
-    request.write(dstr);
-    request.on('error', errCb)
-    request.end();
+  post(path: string, data: any): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      var dstr = JSON.stringify(data);
+      var opts = this._getRequestOptions('POST', path, {
+        'Content-Type': 'application/json',
+        'Content-Length': dstr.length
+      });
+      var request = https.request(opts, res => {
+        resolve(this._parseResponse(res));
+      });
+      request.write(dstr);
+      request.on('error', reject);
+      request.end();
+    });
   }
 }
 
@@ -113,8 +148,8 @@ class Me {
     this._s = s;
     this._c = c;
   }
-  get(cb, errCb) {
-    this._c.get('users/me', cb, errCb);
+  get() {
+    return this._c.get('users/me');
   }
 }
 
@@ -129,33 +164,33 @@ class Pipelines {
     this.Stages = new PipelineStages(s, c);
     this.Fields = new PipelineFields(s, c);
   }
-  getAll(cb, errCb) {
-    this._c.get('pipelines', cb, errCb);
+  getAll() {
+    return this._c.get('pipelines');
   }
-  getOne(key, cb, errCb) {
-    this._c.get('pipelines/' + key, cb, errCb);
+  getOne(key: string) {
+    return this._c.get('pipelines/' + key);
   }
-  getBoxes(key, cb, errCb) {
-    this._c.get('pipelines/' + key + '/boxes', cb, errCb);
+  getBoxes(key: string) {
+    return this._c.get('pipelines/' + key + '/boxes');
   }
-  getBoxesInStage (key, stageKey, cb, errCb) {
-    this._c.get('pipelines/' + key + '/boxes?stageKey='+ encodeURIComponent(stageKey), cb, errCb);
+  getBoxesInStage (key: string, stageKey: string) {
+    return this._c.get('pipelines/' + key + '/boxes?stageKey='+ encodeURIComponent(stageKey));
   }
-  create(data, cb, errCb) {
-    this._c.put('pipelines', data, cb, errCb);
+  create(data: Object) {
+    return this._c.put('pipelines', data);
   }
-  delete(key, cb, errCb) {
-    this._c.delete('pipelines/' + key, cb, errCb);
+  delete(key: string) {
+    return this._c.delete('pipelines/' + key);
   }
-  update(data, cb, errCb) {
-    this._c.post('pipelines/' + data.key, data, cb, errCb);
+  update(data: Object) {
+    return this._c.post('pipelines/' + data.key, data);
   }
-  getFeed(key, detailLevel, cb, errCb) {
+  getFeed(key: string, detailLevel: ?string) {
     var qs = "";
     if (detailLevel) {
       qs += '?' + querystring.stringify({detailLevel});
     }
-    this._c.get('pipelines/' + key + '/newsfeed' + qs, cb, errCb);
+    return this._c.get('pipelines/' + key + '/newsfeed' + qs);
   }
 }
 
@@ -166,20 +201,20 @@ class PipelineStages {
     this._s = s;
     this._c = c;
   }
-  getAll(pipeKey: string, cb, errCb) {
-    this._c.get('pipelines/'+pipeKey+'/stages', cb, errCb);
+  getAll(pipeKey: string) {
+    return this._c.get('pipelines/'+pipeKey+'/stages');
   }
-  getOne(pipeKey: string, key: string, cb, errCb) {
-    this._c.get('pipelines/'+pipeKey +'/stages/' + key, cb, errCb);
+  getOne(pipeKey: string, key: string) {
+    return this._c.get('pipelines/'+pipeKey +'/stages/' + key);
   }
-  create(pipeKey: string, data: Object, cb, errCb) {
-    this._c.put('pipelines/' + pipeKey + '/stages', data, cb, errCb);
+  create(pipeKey: string, data: Object) {
+    return this._c.put('pipelines/' + pipeKey + '/stages', data);
   }
-  delete(pipeKey: string, key: string, cb, errCb) {
-    this._c.delete('pipelines/' +pipeKey +'/stages/' + key, cb, errCb);
+  delete(pipeKey: string, key: string) {
+    return this._c.delete('pipelines/' +pipeKey +'/stages/' + key);
   }
-  update(pipeKey: string, data: Object, cb, errCb) {
-    this._c.post('pipelines/' + pipeKey + '/stages/' + data.key, data, cb, errCb);
+  update(pipeKey: string, data: Object) {
+    return this._c.post('pipelines/' + pipeKey + '/stages/' + data.key, data);
   }
 }
 
@@ -190,20 +225,20 @@ class PipelineFields {
     this._s = s;
     this._c = c;
   }
-  getAll(pipeKey: string, cb, errCb) {
-    this._c.get('pipelines/'+pipeKey+'/fields', cb, errCb);
+  getAll(pipeKey: string) {
+    return this._c.get('pipelines/'+pipeKey+'/fields');
   }
-  getOne(pipeKey: string, key: string, cb, errCb) {
-    this._c.get('pipelines/'+pipeKey +'/fields/' + key, cb, errCb);
+  getOne(pipeKey: string, key: string) {
+    return this._c.get('pipelines/'+pipeKey +'/fields/' + key);
   }
-  create(pipeKey: string, data: Object, cb, errCb) {
-    this._c.put('pipelines/' + pipeKey + '/fields', data, cb, errCb);
+  create(pipeKey: string, data: Object) {
+    return this._c.put('pipelines/' + pipeKey + '/fields', data);
   }
-  delete(pipeKey: string, key: string, cb, errCb) {
-    this._c.delete('pipelines/' +pipeKey +'/fields/' + key, cb, errCb);
+  delete(pipeKey: string, key: string) {
+    return this._c.delete('pipelines/' +pipeKey +'/fields/' + key);
   }
-  update(pipeKey: string, data: Object, cb, errCb) {
-    this._c.post('pipelines/' + pipeKey + '/fields/' + data.key, data, cb, errCb);
+  update(pipeKey: string, data: Object) {
+    return this._c.post('pipelines/' + pipeKey + '/fields/' + data.key, data);
   }
 }
 
@@ -216,45 +251,45 @@ class Boxes {
     this._c = c;
     this.Fields = new BoxFields(s, c);
   }
-  getAll(cb, errCb) {
-    this._c.get('boxes', cb, errCb);
+  getAll() {
+    return this._c.get('boxes');
   }
-  getForPipeline(key: string, cb, errCb) {
-    this._s.Pipelines.getBoxes(key, cb, errCb);
+  getForPipeline(key: string) {
+    return this._s.Pipelines.getBoxes(key);
   }
-  getOne(key: string, cb, errCb) {
-    this._c.get('boxes/' + key, cb, errCb);
+  getOne(key: string) {
+    return this._c.get('boxes/' + key);
   }
-  create(pipeKey, data, cb, errCb) {
-    this._c.put('pipelines/' + pipeKey + '/boxes', data, cb, errCb);
+  create(pipeKey, data) {
+    return this._c.put('pipelines/' + pipeKey + '/boxes', data);
   }
-  delete(key: string, cb, errCb) {
-    this._c.delete('boxes/' + key, cb, errCb);
+  delete(key: string) {
+    return this._c.delete('boxes/' + key);
   }
-  update(data, cb, errCb) {
-    this._c.post('boxes/' + data.key, data, cb, errCb);
+  update(data: Object) {
+    return this._c.post('boxes/' + data.key, data);
   }
-  getFields(key: string, cb, errCb) {
-    this._c.get('boxes/' + key + '/fields', cb, errCb);
+  getFields(key: string) {
+    return this._c.get('boxes/' + key + '/fields');
   }
-  getReminders(key: string, cb, errCb) {
-    this._c.get('boxes/' + key + '/reminders', cb, errCb);
+  getReminders(key: string) {
+    return this._c.get('boxes/' + key + '/reminders');
   }
-  getComments(key: string, cb, errCb) {
-    this._c.get('boxes/' + key + '/comments', cb, errCb);
+  getComments(key: string) {
+    return this._c.get('boxes/' + key + '/comments');
   }
-  createComment(key: string, data, cb, errCb) {
-    this._c.put('boxes/' + key + '/comments', data, cb, errCb);
+  createComment(key: string, data) {
+    return this._c.put('boxes/' + key + '/comments', data);
   }
-  getFiles(key: string, cb, errCb) {
-    this._c.get('boxes/' + key + '/files', cb, errCb);
+  getFiles(key: string) {
+    return this._c.get('boxes/' + key + '/files');
   }
-  getFeed(key: string, detailLevel: ?string, cb: Function, errCb: Function) {
+  getFeed(key: string, detailLevel: ?string) {
     var qs = "";
     if (detailLevel) {
       qs += '?' + querystring.stringify({detailLevel});
     }
-    this._c.get('boxes/' + key + '/newsfeed' + qs, cb, errCb);
+    return this._c.get('boxes/' + key + '/newsfeed' + qs);
   }
 }
 
@@ -265,14 +300,14 @@ class BoxFields {
     this._s = s;
     this._c = c;
   }
-  getForBox(key: string, cb, errCb) {
-    this._s.Boxes.getFields(key, cb, errCb);
+  getForBox(key: string) {
+    return this._s.Boxes.getFields(key);
   }
-  getOne(boxKey: string, key: string, cb, errCb) {
-    this._c.get('boxes/' + boxKey + '/fields/' + key, cb, errCb);
+  getOne(boxKey: string, key: string) {
+    return this._c.get('boxes/' + boxKey + '/fields/' + key);
   }
-  update(boxKey: string, data: Object, cb, errCb) {
-    this._c.post('boxes/' + boxKey + '/fields/' + data.key, data, cb, errCb);
+  update(boxKey: string, data: Object) {
+    return this._c.post('boxes/' + boxKey + '/fields/' + data.key, data);
   }
 }
 
@@ -283,14 +318,14 @@ class Files {
     this._s = s;
     this._c = c;
   }
-  getForBox(key: string, cb, errCb) {
-    this._s.Boxes.getFiles(key, cb, errCb);
+  getForBox(key: string) {
+    return this._s.Boxes.getFiles(key);
   }
-  getOne(key: string, cb, errCb) {
-    this._c.get('files/' + key, cb, errCb);
+  getOne(key: string) {
+    return this._c.get('files/' + key);
   }
-  getContents(key: string, cb, errCb) {
-    this._c.get('files/' + key + '/contents', cb, errCb, true); //don't parse JSON
+  getContents(key: string) {
+    return this._c.getNoParse('files/' + key + '/contents');
   }
 }
 
@@ -309,7 +344,7 @@ export class Streak {
     this.Files = new Files(this, this._c);
   }
 
-  search(query: string, cb: Function, errCb: Function) {
-    this._c.get('search?query=' + encodeURIComponent(query), cb, errCb);
+  search(query: string): Promise {
+    return this._c.get('search?query=' + encodeURIComponent(query));
   }
 }
