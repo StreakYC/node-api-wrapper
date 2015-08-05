@@ -128,15 +128,15 @@ class ConnHelper {
 
   post(path: string, data: any): Promise<Object> {
     return new Promise((resolve, reject) => {
-      var dstr = JSON.stringify(data);
+      var buf = new Buffer(JSON.stringify(data));
       var opts = this._getRequestOptions('POST', path, {
         'Content-Type': 'application/json',
-        'Content-Length': dstr.length
+        'Content-Length': buf.length
       });
       var request = https.request(opts, res => {
         resolve(this._parseResponse(res));
       });
-      request.write(dstr);
+      request.write(buf);
       request.on('error', reject);
       request.end();
     });
