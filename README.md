@@ -1,73 +1,70 @@
-NodeJS Wrapper for Streak API
-================
+# NodeJS Wrapper for Streak API
 
-NodeJS package that acts as a thin wrapper over the Streak API. You can checkout the full API documentation at https://www.streak.com/api
+NodeJS package that acts as a thin wrapper over the Streak API (https://www.streak.com/api).
 
 To include the api just do the standard
 
-    $ node install streakapi
+    $ npm install --save streakapi
 
 and then
 
-    var Streak = require('streakapi');
-    Streak.init('api_key');
+    var streakapi = require('streakapi');
+    var streak = new streakapi.Streak("api key here");
+    streak.Me.get().then(function(me) {
+      console.log('email', me.email);
+    });
 
-Streak API functions:
+## API
 
-    Streak.Me.get(callback, errorCallback);
+All methods return promises.
+
+    streak.Me.get();
 
     //pipeline functions
-	Streak.Pipelines.getAll(callback, errorCallback);
-	Streak.Pipelines.getOne(pipelineKey, callback, errorCallback);
-	Streak.Pipelines.getBoxes(pipelineKey, callback, errorCallback);
-	Streak.Pipelines.create(data, callback, errorCallback);
-	Streak.Pipelines.delete(pipelineKey, callback, errorCallback);
-	Streak.Pipelines.update(data, callback, errorCallback);
-	Streak.Pipelines.getFeed(pipelineKey, activityFrom, specifics, detailLevel, callback, errorCallback);
+    streak.Pipelines.getAll();
+    streak.Pipelines.getOne(pipelineKey);
+    streak.Pipelines.getBoxes(pipelineKey);
+    streak.Pipelines.create(data);
+    streak.Pipelines.delete(pipelineKey);
+    streak.Pipelines.update(data);
+    streak.Pipelines.getFeed(pipelineKey, detailLevel);
 
-	//pipeline stages
-	Streak.Pipelines.Stages.getAll(pipelineKey, callback, errorCallback);
-	Streak.Pipelines.Stages.getOne(pipelineKey, key, callback, errorCallback);
-	Streak.Pipelines.Stages.create(pipelineKey, data, callback, errorCallback);
-	Streak.Pipelines.Stages.delete(pipelineKey, key, callback, errorCallback);
-	Streak.Pipelines.Stages.update(pipelineKey, data, callback, errorCallback);
+    //pipeline stages
+    streak.Pipelines.Stages.getAll(pipelineKey);
+    streak.Pipelines.Stages.getOne(pipelineKey, key);
+    streak.Pipelines.Stages.create(pipelineKey, data);
+    streak.Pipelines.Stages.delete(pipelineKey, key);
+    streak.Pipelines.Stages.update(pipelineKey, data);
 
-	//pipeline fields
-	Streak.Pipelines.Fields.getAll(pipelineKey, callback, errorCallback);
-	Streak.Pipelines.Fields.getOne(pipelineKey, key, callback, errorCallback);
-	Streak.Pipelines.Fields.create(pipelineKey, data, callback, errorCallback);
-	Streak.Pipelines.Fields.delete(pipelineKey, key, callback, errorCallback);
-	Streak.Pipelines.Fields.update(pipelineKey, data, callback, errorCallback);
+    //pipeline fields
+    streak.Pipelines.Fields.getAll(pipelineKey);
+    streak.Pipelines.Fields.getOne(pipelineKey, key);
+    streak.Pipelines.Fields.create(pipelineKey, data);
+    streak.Pipelines.Fields.delete(pipelineKey, key);
+    streak.Pipelines.Fields.update(pipelineKey, data);
 
-	//boxes
-	Streak.Boxes.getAll(callback, errorCallback);
-	Streak.Boxes.getForPipeline(boxKey, callback, errorCallback);
-	Streak.Boxes.getOne(boxKey, callback, errorCallback);
-	Streak.Boxes.create(pipelineKey, data, callback, errorCallback);
-	Streak.Boxes.delete(key, callback, errorCallback);
-	Streak.Boxes.update(data, callback, errorCallback);
-	Streak.Boxes.getFields(boxKey, callback, errorCallback);
-	Streak.Boxes.getReminders(boxKey, callback, errorCallback);
-	Streak.Boxes.getComments(boxKey, callback, errorCallback);
-	Streak.Boxes.getFiles(boxKey, callback, errorCallback);
-	Streak.Boxes.getFeed(boxKey, activityFrom, specifics, detailLevel, callback, errorCallback);
+    //boxes
+    streak.Boxes.getAll();
+    streak.Boxes.getForPipeline(boxKey);
+    streak.Boxes.getOne(boxKey);
+    streak.Boxes.create(pipelineKey, data);
+    streak.Boxes.delete(key);
+    streak.Boxes.update(data);
+    streak.Boxes.getFields(boxKey);
+    streak.Boxes.getReminders(boxKey);
+    streak.Boxes.getComments(boxKey);
+    streak.Boxes.getFiles(boxKey);
+    streak.Boxes.getFeed(boxKey, detailLevel);
 
-	//box fields
-	Streak.Boxes.Fields.getForBox(boxKey, callback, errorCallback);
-	Streak.Boxes.Fields.getOne(boxKey, key, callback, errorCallback);
-	Streak.Boxes.Fields.update(boxKey, data, callback, errorCallback);
+    //box fields
+    streak.Boxes.Fields.getForBox(boxKey);
+    streak.Boxes.Fields.getOne(boxKey, key);
+    streak.Boxes.Fields.update(boxKey, data);
 
-	//reminders
-	Streak.Reminders.getForBox(boxKey, callback, errorCallback);
-	Streak.Reminders.getOne(reminderKey, callback, errorCallback);
-	Streak.Reminders.create(boxKey, data, callback, errorCallback);
-	Streak.Reminders.delete(reminderKey, callback, errorCallback);
-	Streak.Reminders.update(data, callback, errorCallback);
+    //files
+    streak.Files.getForBox(boxKey);
+    streak.Files.getOne(fileKey);
+    streak.Files.getContents(fileKey);
 
-	//files
-	Streak.Files.getForBox(boxKey, callback, errorCallback);
-	Streak.Files.getOne(fileKey, callback, errorCallback);
-	Streak.Files.getContents(fileKey, callback, errorCallback);
-
-	//search
-	Streak.search(query, callback, errorCallback);
+    //search
+    streak.search(query);
