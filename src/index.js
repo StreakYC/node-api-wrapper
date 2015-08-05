@@ -4,6 +4,8 @@
 var https: any/* flow https defs seem broken */ = require('https');
 var querystring = require('querystring');
 
+import aeu from './auto-encode-uri';
+
 class ConnHelper {
   _authKey: string;
 
@@ -168,29 +170,29 @@ class Pipelines {
     return this._c.get('pipelines');
   }
   getOne(key: string) {
-    return this._c.get('pipelines/' + key);
+    return this._c.get(aeu `pipelines/${key}`);
   }
   getBoxes(key: string) {
-    return this._c.get('pipelines/' + key + '/boxes');
+    return this._c.get(aeu `pipelines/${key}/boxes`);
   }
   getBoxesInStage (key: string, stageKey: string) {
-    return this._c.get('pipelines/' + key + '/boxes?stageKey='+ encodeURIComponent(stageKey));
+    return this._c.get(aeu `pipelines/${key}/boxes?stageKey=${stageKey}`);
   }
   create(data: Object) {
     return this._c.put('pipelines', data);
   }
   delete(key: string) {
-    return this._c.delete('pipelines/' + key);
+    return this._c.delete(aeu `pipelines/${key}`);
   }
   update(data: Object) {
-    return this._c.post('pipelines/' + data.key, data);
+    return this._c.post(aeu `pipelines/${data.key}`, data);
   }
   getFeed(key: string, detailLevel: ?string) {
     var qs = "";
     if (detailLevel) {
       qs += '?' + querystring.stringify({detailLevel});
     }
-    return this._c.get('pipelines/' + key + '/newsfeed' + qs);
+    return this._c.get(aeu `pipelines/${key}/newsfeed` + qs);
   }
 }
 
@@ -202,19 +204,19 @@ class PipelineStages {
     this._c = c;
   }
   getAll(pipeKey: string) {
-    return this._c.get('pipelines/'+pipeKey+'/stages');
+    return this._c.get(aeu `pipelines/${pipeKey}/stages`);
   }
   getOne(pipeKey: string, key: string) {
-    return this._c.get('pipelines/'+pipeKey +'/stages/' + key);
+    return this._c.get(aeu `pipelines/${pipeKey}/stages/${key}`);
   }
   create(pipeKey: string, data: Object) {
-    return this._c.put('pipelines/' + pipeKey + '/stages', data);
+    return this._c.put(aeu `pipelines/${pipeKey}/stages`, data);
   }
   delete(pipeKey: string, key: string) {
-    return this._c.delete('pipelines/' +pipeKey +'/stages/' + key);
+    return this._c.delete(aeu `pipelines/${pipeKey}/stages/${key}`);
   }
   update(pipeKey: string, data: Object) {
-    return this._c.post('pipelines/' + pipeKey + '/stages/' + data.key, data);
+    return this._c.post(aeu `pipelines/${pipeKey}/stages/${data.key}`, data);
   }
 }
 
@@ -226,19 +228,19 @@ class PipelineFields {
     this._c = c;
   }
   getAll(pipeKey: string) {
-    return this._c.get('pipelines/'+pipeKey+'/fields');
+    return this._c.get(aeu `pipelines/${pipeKey}/fields`);
   }
   getOne(pipeKey: string, key: string) {
-    return this._c.get('pipelines/'+pipeKey +'/fields/' + key);
+    return this._c.get(aeu `pipelines/${pipeKey}/fields/${key}`);
   }
   create(pipeKey: string, data: Object) {
-    return this._c.put('pipelines/' + pipeKey + '/fields', data);
+    return this._c.put(aeu `pipelines/${pipeKey}/fields`, data);
   }
   delete(pipeKey: string, key: string) {
-    return this._c.delete('pipelines/' +pipeKey +'/fields/' + key);
+    return this._c.delete(aeu `pipelines/${pipeKey}/fields/${key}`);
   }
   update(pipeKey: string, data: Object) {
-    return this._c.post('pipelines/' + pipeKey + '/fields/' + data.key, data);
+    return this._c.post(aeu `pipelines/${pipeKey}/fields/${data.key}`, data);
   }
 }
 
@@ -258,38 +260,38 @@ class Boxes {
     return this._s.Pipelines.getBoxes(key);
   }
   getOne(key: string) {
-    return this._c.get('boxes/' + key);
+    return this._c.get(aeu `boxes/${key}`);
   }
   create(pipeKey, data) {
-    return this._c.put('pipelines/' + pipeKey + '/boxes', data);
+    return this._c.put(aeu `pipelines/${pipeKey}/boxes`, data);
   }
   delete(key: string) {
-    return this._c.delete('boxes/' + key);
+    return this._c.delete(aeu `boxes/${key}`);
   }
   update(data: Object) {
-    return this._c.post('boxes/' + data.key, data);
+    return this._c.post(aeu `boxes/${data.key}`, data);
   }
   getFields(key: string) {
-    return this._c.get('boxes/' + key + '/fields');
+    return this._c.get(aeu `boxes/${key}/fields`);
   }
   getReminders(key: string) {
-    return this._c.get('boxes/' + key + '/reminders');
+    return this._c.get(aeu `boxes/${key}/reminders`);
   }
   getComments(key: string) {
-    return this._c.get('boxes/' + key + '/comments');
+    return this._c.get(aeu `boxes/${key}/comments`);
   }
   createComment(key: string, data) {
-    return this._c.put('boxes/' + key + '/comments', data);
+    return this._c.put(aeu `boxes/${key}/comments`, data);
   }
   getFiles(key: string) {
-    return this._c.get('boxes/' + key + '/files');
+    return this._c.get(aeu `boxes/${key}/files`);
   }
   getFeed(key: string, detailLevel: ?string) {
     var qs = "";
     if (detailLevel) {
       qs += '?' + querystring.stringify({detailLevel});
     }
-    return this._c.get('boxes/' + key + '/newsfeed' + qs);
+    return this._c.get(aeu `boxes/${key}/newsfeed` + qs);
   }
 }
 
@@ -304,10 +306,10 @@ class BoxFields {
     return this._s.Boxes.getFields(key);
   }
   getOne(boxKey: string, key: string) {
-    return this._c.get('boxes/' + boxKey + '/fields/' + key);
+    return this._c.get(aeu `boxes/${boxKey}/fields/${key}`);
   }
   update(boxKey: string, data: Object) {
-    return this._c.post('boxes/' + boxKey + '/fields/' + data.key, data);
+    return this._c.post(aeu `boxes/${boxKey}/fields/${data.key}`, data);
   }
 }
 
@@ -322,10 +324,10 @@ class Files {
     return this._s.Boxes.getFiles(key);
   }
   getOne(key: string) {
-    return this._c.get('files/' + key);
+    return this._c.get(aeu `files/${key}`);
   }
   getContents(key: string) {
-    return this._c.getNoParse('files/' + key + '/contents');
+    return this._c.getNoParse(aeu `files/${key}/contents`);
   }
 }
 
@@ -345,6 +347,6 @@ export class Streak {
   }
 
   search(query: string): Promise {
-    return this._c.get('search?query=' + encodeURIComponent(query));
+    return this._c.get(aeu `search?query=${query}`);
   }
 }
