@@ -52,6 +52,7 @@ class ConnHelper {
           reject(err);
         }
       });
+      response.on('error', reject);
     });
   }
 
@@ -78,6 +79,7 @@ class ConnHelper {
           reject(err);
         }
       });
+      response.on('error', reject);
     });
   }
 
@@ -128,15 +130,15 @@ class ConnHelper {
 
   post(path: string, data: any): Promise<Object> {
     return new Promise((resolve, reject) => {
-      var buf = new Buffer(JSON.stringify(data));
+      var send = querystring.stringify({json:JSON.stringify(data)});
       var opts = this._getRequestOptions('POST', path, {
-        'Content-Type': 'application/json',
-        'Content-Length': buf.length
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': send.length
       });
       var request = https.request(opts, res => {
         resolve(this._parseResponse(res));
       });
-      request.write(buf);
+      request.write(send);
       request.on('error', reject);
       request.end();
     });
