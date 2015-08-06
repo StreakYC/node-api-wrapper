@@ -1,6 +1,6 @@
 {
   "name": "streakapi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "wrapper for the Streak API",
   "keywords": [
     "streak",
@@ -12,6 +12,7 @@
     "name": "Omar Ismail",
     "email": "omar@streak.com"
   },
+  "license": "MIT",
   "scripts": {
     "prepublish": "babel -s inline --optional runtime -d js/ src/",
     "test": "babel-node test/prodtest.js"

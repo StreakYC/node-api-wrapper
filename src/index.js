@@ -336,9 +336,9 @@ class Files {
 export class Streak {
   _c: ConnHelper;
   Me: Me;
-  Pipelines: Object;
-  Boxes: Object;
-  Files: Object;
+  Pipelines: Pipelines;
+  Boxes: Boxes;
+  Files: Files;
 
   constructor(authKey: string) {
     this._c = new ConnHelper(authKey);
