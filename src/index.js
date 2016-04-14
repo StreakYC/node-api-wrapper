@@ -1,8 +1,8 @@
 /* @flow */
 //jshint ignore:start
 
-var https: any/* flow https defs seem broken */ = require('https');
-var querystring = require('querystring');
+import https from 'https';
+import querystring from 'querystring';
 
 import aeu from './auto-encode-uri';
 
