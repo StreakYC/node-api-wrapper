@@ -1,3 +1,4 @@
 {
-	"optional": ["runtime", "es7.asyncFunctions"]
+	"presets": ["es2015", "stage-1"],
+	"plugins": ["transform-runtime", "transform-flow-strip-types"]
 }

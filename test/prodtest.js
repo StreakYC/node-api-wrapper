@@ -1,12 +1,12 @@
 /* @flow */
-//jshint ignore:start
+/* eslint-disable no-console */
 
-var fs = require('fs');
-var assert = require('assert');
+import fs from 'fs';
+import assert from 'assert';
 import {Streak} from '../src';
 
 function readKey(): Promise<string> {
-  var apiKeyFile = __dirname+'/../testapikey.txt';
+  const apiKeyFile = __dirname+'/../testapikey.txt';
   return new Promise((resolve, reject) => {
     fs.readFile(apiKeyFile, 'utf8', (err, result) => {
       if (err)
@@ -18,53 +18,53 @@ function readKey(): Promise<string> {
 }
 
 async function main() {
-  var apiKey = await readKey();
-  var streak = new Streak(apiKey);
-  var response = await streak.Me.get();
+  const apiKey = await readKey();
+  const streak = new Streak(apiKey);
+  const response = await streak.Me.get();
   console.log('email', response.email);
 
   assert.equal(typeof response.email, 'string');
   assert(response.email.indexOf('@') != -1);
-  var pipelines = await streak.Pipelines.getAll();
+  const pipelines = await streak.Pipelines.getAll();
   assert(Array.isArray(pipelines));
   console.log('pipelines', pipelines.map(p => p.name));
 
   if (pipelines.length >= 1) {
-    var firstPipeline = await streak.Pipelines.getOne(pipelines[0].key);
+    const firstPipeline = await streak.Pipelines.getOne(pipelines[0].key);
     assert.strictEqual(firstPipeline.name, pipelines[0].name);
     assert.strictEqual(firstPipeline.key, pipelines[0].key);
     assert.strictEqual(firstPipeline.creatorKey, pipelines[0].creatorKey);
 
-    var newsfeed = await streak.Pipelines.getFeed(firstPipeline.key, null);
+    const newsfeed = await streak.Pipelines.getFeed(firstPipeline.key, null);
     assert(Array.isArray(newsfeed));
     console.log('newsfeed length', newsfeed.length);
 
-    var cNewsfeed = await streak.Pipelines.getFeed(firstPipeline.key, 'CONDENSED');
+    const cNewsfeed = await streak.Pipelines.getFeed(firstPipeline.key, 'CONDENSED');
     assert(Array.isArray(cNewsfeed));
     console.log('condensed newsfeed length', cNewsfeed.length);
 
-    var failed = false;
+    let failed = false;
     try {
-      var newsfeedFail = await streak.Pipelines.getFeed(firstPipeline.key, 'xxINVALID');
-    } catch(err) {
+      await streak.Pipelines.getFeed(firstPipeline.key, 'xxINVALID');
+    } catch (err) {
       assert(err instanceof Error);
       assert.strictEqual(typeof err.statusCode, 'number');
       assert.notEqual(err.statusCode, 200);
       failed = true;
-      console.log("invalid request failed as expected");
+      console.log('invalid request failed as expected');
     }
     assert(failed);
 
-    var boxes = await streak.Boxes.getForPipeline(firstPipeline.key);
+    const boxes = await streak.Boxes.getForPipeline(firstPipeline.key);
     assert(Array.isArray(boxes));
     console.log('boxes count', boxes.length);
 
     if (boxes.length >= 1) {
-      var firstBox = await streak.Boxes.getOne(boxes[0].key);
+      const firstBox = await streak.Boxes.getOne(boxes[0].key);
       assert.strictEqual(firstBox.name, boxes[0].name);
       assert.strictEqual(firstBox.key, boxes[0].key);
 
-      var fields = await streak.Boxes.Fields.getForBox(firstBox.key);
+      const fields = await streak.Boxes.Fields.getForBox(firstBox.key);
       assert(Array.isArray(fields));
       console.log('field count', fields.length);
     } else {
@@ -74,7 +74,7 @@ async function main() {
     console.log('no pipelines, skipping pipeline checks');
   }
 
-  console.log("test successful");
+  console.log('test successful');
 }
 
 main().catch(err => {

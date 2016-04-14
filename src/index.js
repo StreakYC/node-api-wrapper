@@ -1,5 +1,4 @@
 /* @flow */
-//jshint ignore:start
 
 import https from 'https';
 import querystring from 'querystring';
@@ -24,31 +23,33 @@ class ConnHelper {
 
   _parseResponse(response: https.IncomingMessage): Promise {
     return new Promise((resolve, reject) => {
-      var strs: string[] = [];
+      const strs: string[] = [];
       response.on('data', (chunk: string) => {
         strs.push(chunk);
       });
       response.on('end', () => {
         try {
-          var str = strs.join('');
+          const str = strs.join('');
           if (response.statusCode === 200) {
             resolve(JSON.parse(str));
           } else {
-            var json;
-            var errorMessage = `Response code ${response.statusCode}`;
+            let json;
+            let errorMessage = `Response code ${response.statusCode}`;
             try {
               json = JSON.parse(str);
               if (json && json.error) {
                 errorMessage = json.error;
               }
-            } catch(err) {}
+            } catch (err) {
+              // Ignore parse error
+            }
             reject(Object.assign((new Error(errorMessage): Object), {
               str, json,
               statusCode: response.statusCode,
               headers: response.headers
             }));
           }
-        } catch(err) {
+        } catch (err) {
           reject(err);
         }
       });
@@ -58,24 +59,24 @@ class ConnHelper {
 
   _plainResponse(response: https.IncomingMessage): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      var chunks: Buffer[] = [];
+      const chunks: Buffer[] = [];
       response.on('data', (chunk: Buffer) => {
         chunks.push(chunk);
       });
       response.on('end', () => {
         try {
-          var buf = Buffer.concat(chunks);
+          const buf = Buffer.concat(chunks);
           if (response.statusCode === 200) {
             resolve(buf);
           } else {
-            var errorMessage = `Response code ${response.statusCode}`;
+            const errorMessage = `Response code ${response.statusCode}`;
             reject(Object.assign((new Error(errorMessage): Object), {
               buf,
               statusCode: response.statusCode,
               headers: response.headers
             }));
           }
-        } catch(err) {
+        } catch (err) {
           reject(err);
         }
       });
@@ -85,8 +86,8 @@ class ConnHelper {
 
   get(path: string): Promise {
     return new Promise((resolve, reject) => {
-      var opts = this._getRequestOptions('GET', path);
-      var request = https.request(opts, res => {
+      const opts = this._getRequestOptions('GET', path);
+      const request = https.request(opts, res => {
         resolve(this._parseResponse(res));
       });
       request.on('error', reject);
@@ -96,8 +97,8 @@ class ConnHelper {
 
   getNoParse(path: string): Promise<Buffer> {
     return new Promise((resolve, reject) => {
-      var opts = this._getRequestOptions('GET', path, undefined, null);
-      var request = https.request(opts, res => {
+      const opts = this._getRequestOptions('GET', path, undefined, null);
+      const request = https.request(opts, res => {
         resolve(this._plainResponse(res));
       });
       request.on('error', reject);
@@ -107,9 +108,9 @@ class ConnHelper {
 
   put(path: string, data: Object): Promise<Object> {
     return new Promise((resolve, reject) => {
-      var dstr = querystring.stringify(data);
-      var opts = this._getRequestOptions('PUT', path + "?" + dstr);
-      var request = https.request(opts, res => {
+      const dstr = querystring.stringify(data);
+      const opts = this._getRequestOptions('PUT', path + '?' + dstr);
+      const request = https.request(opts, res => {
         resolve(this._parseResponse(res));
       });
       request.on('error', reject);
@@ -119,8 +120,8 @@ class ConnHelper {
 
   delete(path: string): Promise {
     return new Promise((resolve, reject) => {
-      var opts = this._getRequestOptions('DELETE', path);
-      var request = https.request(opts, res => {
+      const opts = this._getRequestOptions('DELETE', path);
+      const request = https.request(opts, res => {
         resolve(this._parseResponse(res));
       });
       request.on('error', reject);
@@ -130,12 +131,12 @@ class ConnHelper {
 
   post(path: string, data: any): Promise<Object> {
     return new Promise((resolve, reject) => {
-      var send = querystring.stringify({json:JSON.stringify(data)});
-      var opts = this._getRequestOptions('POST', path, {
+      const send = querystring.stringify({json:JSON.stringify(data)});
+      const opts = this._getRequestOptions('POST', path, {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': send.length
       });
-      var request = https.request(opts, res => {
+      const request = https.request(opts, res => {
         resolve(this._parseResponse(res));
       });
       request.write(send);
@@ -190,7 +191,7 @@ class Pipelines {
     return this._c.post(aeu `pipelines/${data.key}`, data);
   }
   getFeed(key: string, detailLevel: ?string) {
-    var qs = "";
+    let qs = '';
     if (detailLevel) {
       qs += '?' + querystring.stringify({detailLevel});
     }
@@ -289,7 +290,7 @@ class Boxes {
     return this._c.get(aeu `boxes/${key}/files`);
   }
   getFeed(key: string, detailLevel: ?string) {
-    var qs = "";
+    let qs = '';
     if (detailLevel) {
       qs += '?' + querystring.stringify({detailLevel});
     }
