@@ -283,11 +283,18 @@ class Boxes {
   getComments(key: string) {
     return this._c.get(aeu `boxes/${key}/comments`);
   }
+  // deprecated method
   createComment(key: string, data) {
     return this._c.put(aeu `boxes/${key}/comments`, data);
   }
+  postComment(key: string, message: string) {
+    return this._c.put(aeu `boxes/${key}/comments`, {message});
+  }
   getFiles(key: string) {
     return this._c.get(aeu `boxes/${key}/files`);
+  }
+  getThreads(key: string) {
+    return this._c.get(aeu `boxes/${key}/threads`);
   }
   getFeed(key: string, detailLevel: ?string) {
     let qs = '';
@@ -334,12 +341,28 @@ class Files {
   }
 }
 
+class Threads {
+  _s: Streak;
+  _c: ConnHelper;
+  constructor(s: Streak, c: ConnHelper) {
+    this._s = s;
+    this._c = c;
+  }
+  getForBox(boxKey: string) {
+    return this._s.Boxes.getThreads(boxKey);
+  }
+  getOne(threadKey: string) {
+    return this._c.get(aeu `threads/${threadKey}`);
+  }
+}
+
 export class Streak {
   _c: ConnHelper;
   Me: Me;
   Pipelines: Pipelines;
   Boxes: Boxes;
   Files: Files;
+  Threads: Threads;
 
   constructor(authKey: string) {
     this._c = new ConnHelper(authKey);
@@ -347,6 +370,7 @@ export class Streak {
     this.Pipelines = new Pipelines(this, this._c);
     this.Boxes = new Boxes(this, this._c);
     this.Files = new Files(this, this._c);
+    this.Threads = new Threads(this, this._c);
   }
 
   search(query: string): Promise {

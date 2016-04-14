@@ -53,7 +53,9 @@ All methods return promises.
     streak.Boxes.getFields(boxKey);
     streak.Boxes.getReminders(boxKey);
     streak.Boxes.getComments(boxKey);
+    streak.Boxes.postComment(boxKey, message);
     streak.Boxes.getFiles(boxKey);
+    streak.Boxes.getThreads(boxKey);
     streak.Boxes.getFeed(boxKey, detailLevel);
 
     //box fields
@@ -66,5 +68,15 @@ All methods return promises.
     streak.Files.getOne(fileKey);
     streak.Files.getContents(fileKey);
 
+    //threads
+    streak.Threads.getForBox(boxKey);
+    streak.Threads.getOne(threadKey);
+
     //search
     streak.search(query);
+
+## Types
+
+Basic [Flow Type](http://flowtype.org/) declarations for this module are
+included! If you're using Flow, then no extra setup is necessary to take
+advantage of them.
