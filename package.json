@@ -1,6 +1,6 @@
 {
   "name": "streakapi",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "wrapper for the Streak API",
   "keywords": [
     "streak",
