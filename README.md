@@ -26,7 +26,7 @@ All methods return promises.
     streak.Pipelines.getBoxes(pipelineKey);
     streak.Pipelines.create(data);
     streak.Pipelines.delete(pipelineKey);
-    streak.Pipelines.update(data);
+    streak.Pipelines.update(data); // data must have "key" property containing pipeline key
     streak.Pipelines.getFeed(pipelineKey, detailLevel);
 
     //pipeline stages
@@ -49,7 +49,7 @@ All methods return promises.
     streak.Boxes.getOne(boxKey);
     streak.Boxes.create(pipelineKey, data);
     streak.Boxes.delete(key);
-    streak.Boxes.update(data);
+    streak.Boxes.update(data); // data must have "key" property containing box key
     streak.Boxes.getFields(boxKey);
     streak.Boxes.getReminders(boxKey);
     streak.Boxes.getComments(boxKey);
