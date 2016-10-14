@@ -61,7 +61,7 @@ All methods return promises.
     //box fields
     streak.Boxes.Fields.getForBox(boxKey);
     streak.Boxes.Fields.getOne(boxKey, key);
-    streak.Boxes.Fields.update(boxKey, data);
+    streak.Boxes.Fields.update(boxKey, data);  // data must have "key" property containing the field key and "value" to update to, i.e.: {"key":"1002", "value":"This is my new value for this field!"} 
 
     //files
     streak.Files.getForBox(boxKey);
