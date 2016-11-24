@@ -303,6 +303,9 @@ class Boxes {
     }
     return this._c.get(aeu `boxes/${key}/newsfeed` + qs);
   }
+  getTasks(key: string) {
+    return this._c.get(aeu `boxes/${key}/tasks`);
+  }
 }
 
 class BoxFields {
