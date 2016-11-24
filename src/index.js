@@ -369,14 +369,16 @@ class Tasks {
   getOne(key: string) {
     return this._c.get(aeu `tasks/${key}`);
   }
-  create(boxKey, data) {
+  create(boxKey: string, data: Object) {
     return this._c.post(aeu `boxes/${pipeKey}/tasks`, data);
+  }
+  update(key: string, data: Object) {
+    return this._c.post(aeu `tasks/${key}`, data);
   }
   delete(key: string) {
     return this._c.delete(aeu `tasks/${key}`);
   }
 }
-
 
 export class Streak {
   _c: ConnHelper;
