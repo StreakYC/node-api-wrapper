@@ -13,10 +13,16 @@ class ConnHelper {
   }
 
   _getRequestOptions(method: string, path: string, headers: Object={}, encoding: ?string='utf8'): Object {
+    // By default we request the V1 of the API
+    let prefix = '/api/v1/';
+
+    // If the requested resource is a Task, then use the V2 of the API
+    if (path.indexOf('tasks') > -1) prefix = '/api/v2';
+
     return {
       method, headers, encoding,
       host: 'mailfoogae.appspot.com',
-      path: '/api/v1/' + path,
+      path: prefix + path,
       auth: this._authKey
     };
   }
