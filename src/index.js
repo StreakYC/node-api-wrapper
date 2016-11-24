@@ -359,6 +359,19 @@ class Threads {
   }
 }
 
+class Tasks {
+  _s: Streak;
+  _c: ConnHelper;
+  constructor(s: Streak, c: ConnHelper) {
+    this._s = s;
+    this._c = c;
+  }
+  getOne(key: string) {
+    return this._c.get(aeu `tasks/${key}`);
+  }
+}
+
+
 export class Streak {
   _c: ConnHelper;
   Me: Me;
@@ -366,6 +379,7 @@ export class Streak {
   Boxes: Boxes;
   Files: Files;
   Threads: Threads;
+  Tasks: Tasks;
 
   constructor(authKey: string) {
     this._c = new ConnHelper(authKey);
@@ -374,6 +388,7 @@ export class Streak {
     this.Boxes = new Boxes(this, this._c);
     this.Files = new Files(this, this._c);
     this.Threads = new Threads(this, this._c);
+    this.Tasks = new Tasks(this, this._c);
   }
 
   search(query: string): Promise {
