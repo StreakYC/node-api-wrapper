@@ -372,6 +372,9 @@ class Tasks {
     this._s = s;
     this._c = c;
   }
+  getForBox(boxKey: string) {
+    return this._s.Boxes.getTasks(boxKey);
+  }
   getOne(key: string) {
     return this._c.get(aeu `tasks/${key}`);
   }
