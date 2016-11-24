@@ -369,6 +369,12 @@ class Tasks {
   getOne(key: string) {
     return this._c.get(aeu `tasks/${key}`);
   }
+  create(boxKey, data) {
+    return this._c.post(aeu `boxes/${pipeKey}/tasks`, data);
+  }
+  delete(key: string) {
+    return this._c.delete(aeu `tasks/${key}`);
+  }
 }
 
 
