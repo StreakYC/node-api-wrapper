@@ -13,10 +13,16 @@ class ConnHelper {
   }
 
   _getRequestOptions(method: string, path: string, headers: Object={}, encoding: ?string='utf8'): Object {
+    // By default we request the V1 of the API
+    let prefix = '/api/v1/';
+
+    // If the requested resource is a Task, then use the V2 of the API
+    if (path.indexOf('tasks') > -1) prefix = '/api/v2';
+
     return {
       method, headers, encoding,
       host: 'mailfoogae.appspot.com',
-      path: '/api/v1/' + path,
+      path: prefix + path,
       auth: this._authKey
     };
   }
@@ -303,6 +309,9 @@ class Boxes {
     }
     return this._c.get(aeu `boxes/${key}/newsfeed` + qs);
   }
+  getTasks(key: string) {
+    return this._c.get(aeu `boxes/${key}/tasks`);
+  }
 }
 
 class BoxFields {
@@ -356,6 +365,30 @@ class Threads {
   }
 }
 
+class Tasks {
+  _s: Streak;
+  _c: ConnHelper;
+  constructor(s: Streak, c: ConnHelper) {
+    this._s = s;
+    this._c = c;
+  }
+  getForBox(boxKey: string) {
+    return this._s.Boxes.getTasks(boxKey);
+  }
+  getOne(key: string) {
+    return this._c.get(aeu `tasks/${key}`);
+  }
+  create(boxKey: string, data: Object) {
+    return this._c.post(aeu `boxes/${pipeKey}/tasks`, data);
+  }
+  update(key: string, data: Object) {
+    return this._c.post(aeu `tasks/${key}`, data);
+  }
+  delete(key: string) {
+    return this._c.delete(aeu `tasks/${key}`);
+  }
+}
+
 export class Streak {
   _c: ConnHelper;
   Me: Me;
@@ -363,6 +396,7 @@ export class Streak {
   Boxes: Boxes;
   Files: Files;
   Threads: Threads;
+  Tasks: Tasks;
 
   constructor(authKey: string) {
     this._c = new ConnHelper(authKey);
@@ -371,6 +405,7 @@ export class Streak {
     this.Boxes = new Boxes(this, this._c);
     this.Files = new Files(this, this._c);
     this.Threads = new Threads(this, this._c);
+    this.Tasks = new Tasks(this, this._c);
   }
 
   search(query: string): Promise {

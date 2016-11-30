@@ -72,6 +72,13 @@ All methods return promises.
     streak.Threads.getForBox(boxKey);
     streak.Threads.getOne(threadKey);
 
+    //tasks
+    streak.Tasks.getForBox(boxKey);
+    streak.Tasks.getOne(taskKey);
+    streak.Tasks.create(boxKey, data);
+    streak.Tasks.delete(taskKey);
+    streak.Tasks.update(taskKey, data);
+
     //search
     streak.search(query);
 
