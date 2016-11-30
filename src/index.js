@@ -27,7 +27,7 @@ class ConnHelper {
     };
   }
 
-  _parseResponse(response: https.IncomingMessage): Promise {
+  _parseResponse(response: https.IncomingMessage): Promise<any> {
     return new Promise((resolve, reject) => {
       const strs: string[] = [];
       response.on('data', (chunk: string) => {
@@ -90,7 +90,7 @@ class ConnHelper {
     });
   }
 
-  get(path: string): Promise {
+  get(path: string): Promise<Object> {
     return new Promise((resolve, reject) => {
       const opts = this._getRequestOptions('GET', path);
       const request = https.request(opts, res => {
@@ -124,7 +124,7 @@ class ConnHelper {
     });
   }
 
-  delete(path: string): Promise {
+  delete(path: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const opts = this._getRequestOptions('DELETE', path);
       const request = https.request(opts, res => {
@@ -408,7 +408,7 @@ export class Streak {
     this.Tasks = new Tasks(this, this._c);
   }
 
-  search(query: string): Promise {
+  search(query: string): Promise<Object> {
     return this._c.get(aeu `search?query=${query}`);
   }
 }
