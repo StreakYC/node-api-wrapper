@@ -21,7 +21,14 @@
     "lint-fix": "eslint . --fix"
   },
   "main": "js/index.js",
-  "repository": "https://github.com/StreakYC/node-api-wrapper",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StreakYC/node-api-wrapper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/StreakYC/node-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/StreakYC/node-api-wrapper#readme",
   "devDependencies": {
     "babel-cli": "^6.7.5",
     "babel-eslint": "^7.1.1",
