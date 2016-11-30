@@ -1,5 +1,8 @@
 # NodeJS Wrapper for Streak API
 
+[![Circle CI](https://circleci.com/gh/StreakYC/node-api-wrapper.svg?style=shield)](https://circleci.com/gh/StreakYC/node-api-wrapper)
+[![npm version](https://badge.fury.io/js/streakapi.svg)](https://badge.fury.io/js/streakapi)
+
 NodeJS package that acts as a thin wrapper over the Streak API (https://www.streak.com/api).
 
 To use the API, just do the standard
