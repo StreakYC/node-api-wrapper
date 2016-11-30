@@ -18,7 +18,13 @@ function readKey(): Promise<string> {
 }
 
 async function main() {
-  const apiKey = await readKey();
+  let apiKey;
+  try {
+    apiKey = await readKey();
+  } catch (err) {
+    console.log('testapikey.txt not found; not running test.');
+    return;
+  }
   const streak = new Streak(apiKey);
   const response = await streak.Me.get();
   console.log('email', response.email);
