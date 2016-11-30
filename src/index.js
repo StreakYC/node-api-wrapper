@@ -379,7 +379,7 @@ class Tasks {
     return this._c.get(aeu `tasks/${key}`);
   }
   create(boxKey: string, data: Object) {
-    return this._c.post(aeu `boxes/${pipeKey}/tasks`, data);
+    return this._c.post(aeu `boxes/${boxKey}/tasks`, data);
   }
   update(key: string, data: Object) {
     return this._c.post(aeu `tasks/${key}`, data);
