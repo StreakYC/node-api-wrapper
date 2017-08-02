@@ -17,7 +17,8 @@ class ConnHelper {
     let prefix = '/api/v1/';
 
     // If the requested resource is a Task, then use the V2 of the API
-    if (path.indexOf('tasks') > -1) prefix = '/api/v2';
+    if (path.indexOf('tasks') > -1) prefix = '/api/v2/';
+    if (path.indexOf('webhooks') > -1) prefix = '/api/v2/';
 
     return {
       method, headers, encoding,
@@ -389,6 +390,67 @@ class Tasks {
   }
 }
 
+class Webhooks {
+  _s: Streak;
+  _c: ConnHelper;
+  constructor(s: Streak, c: ConnHelper) {
+    this._s = s;
+    this._c = c;
+  }
+
+  /**
+   * Get all webhooks for a pipeline
+   *
+   * @param key Pipeline key
+   * @return {Promise.<Object>}
+   */
+  getForPipeline(key: string) {
+    return this._c.get(aeu `pipelines/${key}/webhooks`);
+  }
+
+  /**
+   * Get a specific webhook
+   *
+   * @param key Webhook key
+   * @return {Promise.<Object>}
+   */
+  getOne(key: string) {
+    return this._c.get(aeu `webhooks/${key}`);
+  }
+
+  /**
+   * Create a new webhook for pipeline
+   *
+   * @param key Pipeline key
+   * @param data
+   * @return {Promise.<Object>}
+   */
+  create(key: string, data: Object) {
+    return this._c.post(aeu `pipelines/${key}/webhooks`, data);
+  }
+
+  /**
+   * Delete a webhook
+   *
+   * @param key Webhook key
+   * @return {Promise.<Object>}
+   */
+  delete(key: string) {
+    return this._c.delete(aeu `webhooks/${key}`);
+  }
+
+  /**
+   * Edit a webhook
+   *
+   * @param key Webhook key
+   * @param data
+   * @return {Promise.<Object>}
+   */
+  update(key: string, data: Object) {
+    return this._c.post(aeu `webhooks/${key}`, data);
+  }
+}
+
 export class Streak {
   _c: ConnHelper;
   Me: Me;
@@ -397,6 +459,7 @@ export class Streak {
   Files: Files;
   Threads: Threads;
   Tasks: Tasks;
+  Webhooks: Webhooks;
 
   constructor(authKey: string) {
     this._c = new ConnHelper(authKey);
@@ -406,6 +469,20 @@ export class Streak {
     this.Files = new Files(this, this._c);
     this.Threads = new Threads(this, this._c);
     this.Tasks = new Tasks(this, this._c);
+    this.Webhooks = new Webhooks(this, this._c);
+
+    // constants for webhook event types
+    this.Webhooks.boxCreate = 'BOX_CREATE';
+    this.Webhooks.boxDelete = 'BOX_DELETE';
+    this.Webhooks.stageCreate = 'STAGE_CREATE';
+    this.Webhooks.boxNewEmailAddress = 'BOX_NEW_EMAIL_ADDRESS';
+    this.Webhooks.boxEdit = 'BOX_EDIT';
+    this.Webhooks.boxChangeState = 'BOX_CHANGE_STAGE';
+    this.Webhooks.boxChangePipeline = 'BOX_CHANGE_PIPELINE';
+    this.Webhooks.commentCreate = 'COMMENT_CREATE';
+    this.Webhooks.taskCreate = 'TASK_CREATE';
+    this.Webhooks.taskComplete = 'TASK_COMPLETE';
+    this.Webhooks.taskDue = 'TASK_DUE';
   }
 
   search(query: string): Promise<Object> {

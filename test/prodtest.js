@@ -3,10 +3,10 @@
 
 import fs from 'fs';
 import assert from 'assert';
-import {Streak} from '../src';
+import { Streak } from '../src';
 
-function readKey(): Promise<string> {
-  const apiKeyFile = __dirname+'/../testapikey.txt';
+function readKey (): Promise<string> {
+  const apiKeyFile = __dirname + '/../testapikey.txt';
   return new Promise((resolve, reject) => {
     fs.readFile(apiKeyFile, 'utf8', (err, result) => {
       if (err)
@@ -17,7 +17,7 @@ function readKey(): Promise<string> {
   });
 }
 
-async function main() {
+async function main () {
   let apiKey;
   try {
     apiKey = await readKey();
@@ -76,6 +76,46 @@ async function main() {
     } else {
       console.log('no boxes, skipping box checks');
     }
+
+    const webhooks = await streak.Webhooks.getForPipeline(firstPipeline.key);
+    assert(typeof webhooks === 'object');
+    assert(Array.isArray(webhooks.results));
+    console.log('webhooks count', webhooks.results.length);
+
+    // create test webhook
+    let webhookData = {
+      event: streak.Webhooks.boxCreate,
+      targetUrl: 'https://escape/to/the/void'
+    };
+    const newWebhook = await streak.Webhooks.create(firstPipeline.key, webhookData);
+    assert(typeof newWebhook === 'object');
+    assert(newWebhook.event === webhookData.event);
+    assert(newWebhook.targetUrl === webhookData.targetUrl);
+    console.log('created webhook', newWebhook.key);
+
+    let webhookKey = newWebhook.key;
+
+    // get specific webhook
+    const existingWebhook = await streak.Webhooks.getOne(webhookKey);
+    assert(existingWebhook.event === webhookData.event);
+    assert(existingWebhook.targetUrl === webhookData.targetUrl);
+    console.log('retrieved webhook', existingWebhook.key);
+
+    // update test webhook
+    let updatedWebhookData = {
+      targetUrl: 'http://war/for/territory'
+    };
+    const updateWebhookResponse = await streak.Webhooks.update(webhookKey, updatedWebhookData);
+    assert(updateWebhookResponse.event === webhookData.event);
+    assert(updateWebhookResponse.targetUrl === updatedWebhookData.targetUrl);
+    console.log('updated webhook', updateWebhookResponse.key);
+
+    // delete test webhook
+    const deleteWebhookResponse = await streak.Webhooks.delete(webhookKey);
+    assert(typeof deleteWebhookResponse === 'object');
+    assert(deleteWebhookResponse.success === true);
+    console.log('deleted webhook', webhookKey);
+
   } else {
     console.log('no pipelines, skipping pipeline checks');
   }
