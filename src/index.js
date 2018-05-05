@@ -280,6 +280,9 @@ class Boxes {
   update(data: Object) {
     return this._c.post(aeu `boxes/${data.key}`, data);
   }
+  updateMultipleFields(key, data) {
+    return this._c.post(aeu `boxes/${key}`, data);
+  }
   getFields(key: string) {
     return this._c.get(aeu `boxes/${key}/fields`);
   }
