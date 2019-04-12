@@ -5,31 +5,31 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports.Streak = undefined;
 
-var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+const _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
 
-var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+const _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
 
-var _stringify = require('babel-runtime/core-js/json/stringify');
+const _stringify = require('babel-runtime/core-js/json/stringify');
 
-var _stringify2 = _interopRequireDefault(_stringify);
+const _stringify2 = _interopRequireDefault(_stringify);
 
-var _assign = require('babel-runtime/core-js/object/assign');
+const _assign = require('babel-runtime/core-js/object/assign');
 
-var _assign2 = _interopRequireDefault(_assign);
+const _assign2 = _interopRequireDefault(_assign);
 
-var _promise = require('babel-runtime/core-js/promise');
+const _promise = require('babel-runtime/core-js/promise');
 
-var _promise2 = _interopRequireDefault(_promise);
+const _promise2 = _interopRequireDefault(_promise);
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+const _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+const _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+const _createClass2 = require('babel-runtime/helpers/createClass');
 
-var _createClass3 = _interopRequireDefault(_createClass2);
+const _createClass3 = _interopRequireDefault(_createClass2);
 
-var _templateObject = (0, _taggedTemplateLiteral3.default)(['pipelines/', ''], ['pipelines/', '']),
+const _templateObject = (0, _taggedTemplateLiteral3.default)(['pipelines/', ''], ['pipelines/', '']),
   _templateObject2 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/boxes'], ['pipelines/', '/boxes']),
   _templateObject3 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/boxes?stageKey=', ''], ['pipelines/', '/boxes?stageKey=', '']),
   _templateObject4 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/newsfeed'], ['pipelines/', '/newsfeed']),
@@ -54,21 +54,21 @@ var _templateObject = (0, _taggedTemplateLiteral3.default)(['pipelines/', ''], [
   _templateObject23 = (0, _taggedTemplateLiteral3.default)(['webhooks/', ''], ['webhooks/', '']),
   _templateObject24 = (0, _taggedTemplateLiteral3.default)(['search?query=', ''], ['search?query=', '']);
 
-var _https = require('https');
+const _https = require('https');
 
-var _https2 = _interopRequireDefault(_https);
+const _https2 = _interopRequireDefault(_https);
 
-var _querystring = require('querystring');
+const _querystring = require('querystring');
 
-var _querystring2 = _interopRequireDefault(_querystring);
+const _querystring2 = _interopRequireDefault(_querystring);
 
-var _autoEncodeUri = require('./auto-encode-uri');
+const _autoEncodeUri = require('./auto-encode-uri');
 
-var _autoEncodeUri2 = _interopRequireDefault(_autoEncodeUri);
+const _autoEncodeUri2 = _interopRequireDefault(_autoEncodeUri);
 
 function _interopRequireDefault (obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ConnHelper = function () {
+const ConnHelper = function () {
   function ConnHelper (authKey) {
     (0, _classCallCheck3.default)(this, ConnHelper);
 
@@ -242,7 +242,7 @@ var ConnHelper = function () {
   return ConnHelper;
 }();
 
-var Me = function () {
+const Me = function () {
   function Me (s, c) {
     (0, _classCallCheck3.default)(this, Me);
 
@@ -259,7 +259,7 @@ var Me = function () {
   return Me;
 }();
 
-var Pipelines = function () {
+const Pipelines = function () {
   function Pipelines (s, c) {
     (0, _classCallCheck3.default)(this, Pipelines);
 
@@ -317,7 +317,7 @@ var Pipelines = function () {
   return Pipelines;
 }();
 
-var PipelineStages = function () {
+const PipelineStages = function () {
   function PipelineStages (s, c) {
     (0, _classCallCheck3.default)(this, PipelineStages);
 
@@ -354,7 +354,7 @@ var PipelineStages = function () {
   return PipelineStages;
 }();
 
-var PipelineFields = function () {
+const PipelineFields = function () {
   function PipelineFields (s, c) {
     (0, _classCallCheck3.default)(this, PipelineFields);
 
@@ -391,7 +391,7 @@ var PipelineFields = function () {
   return PipelineFields;
 }();
 
-var Boxes = function () {
+const Boxes = function () {
   function Boxes (s, c) {
     (0, _classCallCheck3.default)(this, Boxes);
 
@@ -485,7 +485,7 @@ var Boxes = function () {
   return Boxes;
 }();
 
-var BoxFields = function () {
+const BoxFields = function () {
   function BoxFields (s, c) {
     (0, _classCallCheck3.default)(this, BoxFields);
 
@@ -512,7 +512,7 @@ var BoxFields = function () {
   return BoxFields;
 }();
 
-var Files = function () {
+const Files = function () {
   function Files (s, c) {
     (0, _classCallCheck3.default)(this, Files);
 
@@ -539,7 +539,7 @@ var Files = function () {
   return Files;
 }();
 
-var Threads = function () {
+const Threads = function () {
   function Threads (s, c) {
     (0, _classCallCheck3.default)(this, Threads);
 
@@ -561,7 +561,7 @@ var Threads = function () {
   return Threads;
 }();
 
-var Tasks = function () {
+const Tasks = function () {
   function Tasks (s, c) {
     (0, _classCallCheck3.default)(this, Tasks);
 
@@ -598,7 +598,7 @@ var Tasks = function () {
   return Tasks;
 }();
 
-var Webhooks = function () {
+const Webhooks = function () {
   function Webhooks (s, c) {
     (0, _classCallCheck3.default)(this, Webhooks);
 
@@ -677,7 +677,7 @@ var Webhooks = function () {
   return Webhooks;
 }();
 
-var Streak = exports.Streak = function () {
+const Streak = exports.Streak = function () {
   function Streak (authKey) {
     (0, _classCallCheck3.default)(this, Streak);
 
