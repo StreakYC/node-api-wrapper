@@ -1,6 +1,6 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
   value: true
 });
 exports.Streak = undefined;
@@ -30,29 +30,29 @@ var _createClass2 = require('babel-runtime/helpers/createClass');
 var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _templateObject = (0, _taggedTemplateLiteral3.default)(['pipelines/', ''], ['pipelines/', '']),
-    _templateObject2 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/boxes'], ['pipelines/', '/boxes']),
-    _templateObject3 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/boxes?stageKey=', ''], ['pipelines/', '/boxes?stageKey=', '']),
-    _templateObject4 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/newsfeed'], ['pipelines/', '/newsfeed']),
-    _templateObject5 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/stages'], ['pipelines/', '/stages']),
-    _templateObject6 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/stages/', ''], ['pipelines/', '/stages/', '']),
-    _templateObject7 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/fields'], ['pipelines/', '/fields']),
-    _templateObject8 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/fields/', ''], ['pipelines/', '/fields/', '']),
-    _templateObject9 = (0, _taggedTemplateLiteral3.default)(['boxes/', ''], ['boxes/', '']),
-    _templateObject10 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/fields'], ['boxes/', '/fields']),
-    _templateObject11 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/reminders'], ['boxes/', '/reminders']),
-    _templateObject12 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/comments'], ['boxes/', '/comments']),
-    _templateObject13 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/files'], ['boxes/', '/files']),
-    _templateObject14 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/threads'], ['boxes/', '/threads']),
-    _templateObject15 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/newsfeed'], ['boxes/', '/newsfeed']),
-    _templateObject16 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/tasks'], ['boxes/', '/tasks']),
-    _templateObject17 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/fields/', ''], ['boxes/', '/fields/', '']),
-    _templateObject18 = (0, _taggedTemplateLiteral3.default)(['files/', ''], ['files/', '']),
-    _templateObject19 = (0, _taggedTemplateLiteral3.default)(['files/', '/contents'], ['files/', '/contents']),
-    _templateObject20 = (0, _taggedTemplateLiteral3.default)(['threads/', ''], ['threads/', '']),
-    _templateObject21 = (0, _taggedTemplateLiteral3.default)(['tasks/', ''], ['tasks/', '']),
-    _templateObject22 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/webhooks'], ['pipelines/', '/webhooks']),
-    _templateObject23 = (0, _taggedTemplateLiteral3.default)(['webhooks/', ''], ['webhooks/', '']),
-    _templateObject24 = (0, _taggedTemplateLiteral3.default)(['search?query=', ''], ['search?query=', '']);
+  _templateObject2 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/boxes'], ['pipelines/', '/boxes']),
+  _templateObject3 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/boxes?stageKey=', ''], ['pipelines/', '/boxes?stageKey=', '']),
+  _templateObject4 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/newsfeed'], ['pipelines/', '/newsfeed']),
+  _templateObject5 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/stages'], ['pipelines/', '/stages']),
+  _templateObject6 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/stages/', ''], ['pipelines/', '/stages/', '']),
+  _templateObject7 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/fields'], ['pipelines/', '/fields']),
+  _templateObject8 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/fields/', ''], ['pipelines/', '/fields/', '']),
+  _templateObject9 = (0, _taggedTemplateLiteral3.default)(['boxes/', ''], ['boxes/', '']),
+  _templateObject10 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/fields'], ['boxes/', '/fields']),
+  _templateObject11 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/reminders'], ['boxes/', '/reminders']),
+  _templateObject12 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/comments'], ['boxes/', '/comments']),
+  _templateObject13 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/files'], ['boxes/', '/files']),
+  _templateObject14 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/threads'], ['boxes/', '/threads']),
+  _templateObject15 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/newsfeed'], ['boxes/', '/newsfeed']),
+  _templateObject16 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/tasks'], ['boxes/', '/tasks']),
+  _templateObject17 = (0, _taggedTemplateLiteral3.default)(['boxes/', '/fields/', ''], ['boxes/', '/fields/', '']),
+  _templateObject18 = (0, _taggedTemplateLiteral3.default)(['files/', ''], ['files/', '']),
+  _templateObject19 = (0, _taggedTemplateLiteral3.default)(['files/', '/contents'], ['files/', '/contents']),
+  _templateObject20 = (0, _taggedTemplateLiteral3.default)(['threads/', ''], ['threads/', '']),
+  _templateObject21 = (0, _taggedTemplateLiteral3.default)(['tasks/', ''], ['tasks/', '']),
+  _templateObject22 = (0, _taggedTemplateLiteral3.default)(['pipelines/', '/webhooks'], ['pipelines/', '/webhooks']),
+  _templateObject23 = (0, _taggedTemplateLiteral3.default)(['webhooks/', ''], ['webhooks/', '']),
+  _templateObject24 = (0, _taggedTemplateLiteral3.default)(['search?query=', ''], ['search?query=', '']);
 
 var _https = require('https');
 
@@ -66,10 +66,10 @@ var _autoEncodeUri = require('./auto-encode-uri');
 
 var _autoEncodeUri2 = _interopRequireDefault(_autoEncodeUri);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault (obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ConnHelper = function () {
-  function ConnHelper(authKey) {
+  function ConnHelper (authKey) {
     (0, _classCallCheck3.default)(this, ConnHelper);
 
     this._authKey = authKey;
@@ -77,7 +77,7 @@ var ConnHelper = function () {
 
   (0, _createClass3.default)(ConnHelper, [{
     key: '_getRequestOptions',
-    value: function _getRequestOptions(method, path) {
+    value: function _getRequestOptions (method, path) {
       var headers = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       var encoding = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'utf8';
 
@@ -85,10 +85,10 @@ var ConnHelper = function () {
       var prefix = '/api/v1/';
 
       // If the requested resource is a Task, then use the V2 of the API
-      var v2prefix = '/api/v2/'
+      var v2prefix = '/api/v2/';
       if (path.indexOf('tasks') > -1) prefix = v2prefix;
       if (path.indexOf('webhooks') > -1) prefix = v2prefix;
-      if (path.indexOf('boxes') > -1 && method === 'post') prefix = v2prefix;
+      if (path.indexOf('boxes') > -1 && method.toLowerCase() === 'post') prefix = v2prefix;
 
       return {
         method: method, headers: headers, encoding: encoding,
@@ -99,7 +99,7 @@ var ConnHelper = function () {
     }
   }, {
     key: '_parseResponse',
-    value: function _parseResponse(response) {
+    value: function _parseResponse (response) {
       return new _promise2.default(function (resolve, reject) {
         var strs = [];
         response.on('data', function (chunk) {
@@ -136,7 +136,7 @@ var ConnHelper = function () {
     }
   }, {
     key: '_plainResponse',
-    value: function _plainResponse(response) {
+    value: function _plainResponse (response) {
       return new _promise2.default(function (resolve, reject) {
         var chunks = [];
         response.on('data', function (chunk) {
@@ -164,7 +164,7 @@ var ConnHelper = function () {
     }
   }, {
     key: 'get',
-    value: function get(path) {
+    value: function get (path) {
       var _this = this;
 
       return new _promise2.default(function (resolve, reject) {
@@ -178,7 +178,7 @@ var ConnHelper = function () {
     }
   }, {
     key: 'getNoParse',
-    value: function getNoParse(path) {
+    value: function getNoParse (path) {
       var _this2 = this;
 
       return new _promise2.default(function (resolve, reject) {
@@ -192,7 +192,7 @@ var ConnHelper = function () {
     }
   }, {
     key: 'put',
-    value: function put(path, data) {
+    value: function put (path, data) {
       var _this3 = this;
 
       return new _promise2.default(function (resolve, reject) {
@@ -207,7 +207,7 @@ var ConnHelper = function () {
     }
   }, {
     key: 'delete',
-    value: function _delete(path) {
+    value: function _delete (path) {
       var _this4 = this;
 
       return new _promise2.default(function (resolve, reject) {
@@ -221,7 +221,7 @@ var ConnHelper = function () {
     }
   }, {
     key: 'post',
-    value: function post(path, data) {
+    value: function post (path, data) {
       var _this5 = this;
 
       return new _promise2.default(function (resolve, reject) {
@@ -243,7 +243,7 @@ var ConnHelper = function () {
 }();
 
 var Me = function () {
-  function Me(s, c) {
+  function Me (s, c) {
     (0, _classCallCheck3.default)(this, Me);
 
     this._s = s;
@@ -252,7 +252,7 @@ var Me = function () {
 
   (0, _createClass3.default)(Me, [{
     key: 'get',
-    value: function get() {
+    value: function get () {
       return this._c.get('users/me');
     }
   }]);
@@ -260,7 +260,7 @@ var Me = function () {
 }();
 
 var Pipelines = function () {
-  function Pipelines(s, c) {
+  function Pipelines (s, c) {
     (0, _classCallCheck3.default)(this, Pipelines);
 
     this._s = s;
@@ -271,42 +271,42 @@ var Pipelines = function () {
 
   (0, _createClass3.default)(Pipelines, [{
     key: 'getAll',
-    value: function getAll() {
+    value: function getAll () {
       return this._c.get('pipelines');
     }
   }, {
     key: 'getOne',
-    value: function getOne(key) {
+    value: function getOne (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject, key));
     }
   }, {
     key: 'getBoxes',
-    value: function getBoxes(key) {
+    value: function getBoxes (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject2, key));
     }
   }, {
     key: 'getBoxesInStage',
-    value: function getBoxesInStage(key, stageKey) {
+    value: function getBoxesInStage (key, stageKey) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject3, key, stageKey));
     }
   }, {
     key: 'create',
-    value: function create(data) {
+    value: function create (data) {
       return this._c.put('pipelines', data);
     }
   }, {
     key: 'delete',
-    value: function _delete(key) {
+    value: function _delete (key) {
       return this._c.delete((0, _autoEncodeUri2.default)(_templateObject, key));
     }
   }, {
     key: 'update',
-    value: function update(data) {
+    value: function update (data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject, data.key), data);
     }
   }, {
     key: 'getFeed',
-    value: function getFeed(key, detailLevel) {
+    value: function getFeed (key, detailLevel) {
       var qs = '';
       if (detailLevel) {
         qs += '?' + _querystring2.default.stringify({ detailLevel: detailLevel });
@@ -318,7 +318,7 @@ var Pipelines = function () {
 }();
 
 var PipelineStages = function () {
-  function PipelineStages(s, c) {
+  function PipelineStages (s, c) {
     (0, _classCallCheck3.default)(this, PipelineStages);
 
     this._s = s;
@@ -327,27 +327,27 @@ var PipelineStages = function () {
 
   (0, _createClass3.default)(PipelineStages, [{
     key: 'getAll',
-    value: function getAll(pipeKey) {
+    value: function getAll (pipeKey) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject5, pipeKey));
     }
   }, {
     key: 'getOne',
-    value: function getOne(pipeKey, key) {
+    value: function getOne (pipeKey, key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject6, pipeKey, key));
     }
   }, {
     key: 'create',
-    value: function create(pipeKey, data) {
+    value: function create (pipeKey, data) {
       return this._c.put((0, _autoEncodeUri2.default)(_templateObject5, pipeKey), data);
     }
   }, {
     key: 'delete',
-    value: function _delete(pipeKey, key) {
+    value: function _delete (pipeKey, key) {
       return this._c.delete((0, _autoEncodeUri2.default)(_templateObject6, pipeKey, key));
     }
   }, {
     key: 'update',
-    value: function update(pipeKey, data) {
+    value: function update (pipeKey, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject6, pipeKey, data.key), data);
     }
   }]);
@@ -355,7 +355,7 @@ var PipelineStages = function () {
 }();
 
 var PipelineFields = function () {
-  function PipelineFields(s, c) {
+  function PipelineFields (s, c) {
     (0, _classCallCheck3.default)(this, PipelineFields);
 
     this._s = s;
@@ -364,27 +364,27 @@ var PipelineFields = function () {
 
   (0, _createClass3.default)(PipelineFields, [{
     key: 'getAll',
-    value: function getAll(pipeKey) {
+    value: function getAll (pipeKey) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject7, pipeKey));
     }
   }, {
     key: 'getOne',
-    value: function getOne(pipeKey, key) {
+    value: function getOne (pipeKey, key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject8, pipeKey, key));
     }
   }, {
     key: 'create',
-    value: function create(pipeKey, data) {
+    value: function create (pipeKey, data) {
       return this._c.put((0, _autoEncodeUri2.default)(_templateObject7, pipeKey), data);
     }
   }, {
     key: 'delete',
-    value: function _delete(pipeKey, key) {
+    value: function _delete (pipeKey, key) {
       return this._c.delete((0, _autoEncodeUri2.default)(_templateObject8, pipeKey, key));
     }
   }, {
     key: 'update',
-    value: function update(pipeKey, data) {
+    value: function update (pipeKey, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject8, pipeKey, data.key), data);
     }
   }]);
@@ -392,7 +392,7 @@ var PipelineFields = function () {
 }();
 
 var Boxes = function () {
-  function Boxes(s, c) {
+  function Boxes (s, c) {
     (0, _classCallCheck3.default)(this, Boxes);
 
     this._s = s;
@@ -402,74 +402,74 @@ var Boxes = function () {
 
   (0, _createClass3.default)(Boxes, [{
     key: 'getAll',
-    value: function getAll() {
+    value: function getAll () {
       return this._c.get('boxes');
     }
   }, {
     key: 'getForPipeline',
-    value: function getForPipeline(key) {
+    value: function getForPipeline (key) {
       return this._s.Pipelines.getBoxes(key);
     }
   }, {
     key: 'getOne',
-    value: function getOne(key) {
+    value: function getOne (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject9, key));
     }
   }, {
     key: 'create',
-    value: function create(pipeKey, data) {
+    value: function create (pipeKey, data) {
       return this._c.put((0, _autoEncodeUri2.default)(_templateObject2, pipeKey), data);
     }
   }, {
     key: 'delete',
-    value: function _delete(key) {
+    value: function _delete (key) {
       return this._c.delete((0, _autoEncodeUri2.default)(_templateObject9, key));
     }
   }, {
     key: 'update',
-    value: function update(data) {
+    value: function update (data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject9, data.key), data);
     }
   }, {
     key: 'getFields',
-    value: function getFields(key) {
+    value: function getFields (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject10, key));
     }
   }, {
     key: 'getReminders',
-    value: function getReminders(key) {
+    value: function getReminders (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject11, key));
     }
   }, {
     key: 'getComments',
-    value: function getComments(key) {
+    value: function getComments (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject12, key));
     }
     // deprecated method
 
   }, {
     key: 'createComment',
-    value: function createComment(key, data) {
+    value: function createComment (key, data) {
       return this._c.put((0, _autoEncodeUri2.default)(_templateObject12, key), data);
     }
   }, {
     key: 'postComment',
-    value: function postComment(key, message) {
+    value: function postComment (key, message) {
       return this._c.put((0, _autoEncodeUri2.default)(_templateObject12, key), { message: message });
     }
   }, {
     key: 'getFiles',
-    value: function getFiles(key) {
+    value: function getFiles (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject13, key));
     }
   }, {
     key: 'getThreads',
-    value: function getThreads(key) {
+    value: function getThreads (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject14, key));
     }
   }, {
     key: 'getFeed',
-    value: function getFeed(key, detailLevel) {
+    value: function getFeed (key, detailLevel) {
       var qs = '';
       if (detailLevel) {
         qs += '?' + _querystring2.default.stringify({ detailLevel: detailLevel });
@@ -478,7 +478,7 @@ var Boxes = function () {
     }
   }, {
     key: 'getTasks',
-    value: function getTasks(key) {
+    value: function getTasks (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject16, key));
     }
   }]);
@@ -486,7 +486,7 @@ var Boxes = function () {
 }();
 
 var BoxFields = function () {
-  function BoxFields(s, c) {
+  function BoxFields (s, c) {
     (0, _classCallCheck3.default)(this, BoxFields);
 
     this._s = s;
@@ -495,17 +495,17 @@ var BoxFields = function () {
 
   (0, _createClass3.default)(BoxFields, [{
     key: 'getForBox',
-    value: function getForBox(key) {
+    value: function getForBox (key) {
       return this._s.Boxes.getFields(key);
     }
   }, {
     key: 'getOne',
-    value: function getOne(boxKey, key) {
+    value: function getOne (boxKey, key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject17, boxKey, key));
     }
   }, {
     key: 'update',
-    value: function update(boxKey, data) {
+    value: function update (boxKey, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject17, boxKey, data.key), data);
     }
   }]);
@@ -513,7 +513,7 @@ var BoxFields = function () {
 }();
 
 var Files = function () {
-  function Files(s, c) {
+  function Files (s, c) {
     (0, _classCallCheck3.default)(this, Files);
 
     this._s = s;
@@ -522,17 +522,17 @@ var Files = function () {
 
   (0, _createClass3.default)(Files, [{
     key: 'getForBox',
-    value: function getForBox(key) {
+    value: function getForBox (key) {
       return this._s.Boxes.getFiles(key);
     }
   }, {
     key: 'getOne',
-    value: function getOne(key) {
+    value: function getOne (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject18, key));
     }
   }, {
     key: 'getContents',
-    value: function getContents(key) {
+    value: function getContents (key) {
       return this._c.getNoParse((0, _autoEncodeUri2.default)(_templateObject19, key));
     }
   }]);
@@ -540,7 +540,7 @@ var Files = function () {
 }();
 
 var Threads = function () {
-  function Threads(s, c) {
+  function Threads (s, c) {
     (0, _classCallCheck3.default)(this, Threads);
 
     this._s = s;
@@ -549,12 +549,12 @@ var Threads = function () {
 
   (0, _createClass3.default)(Threads, [{
     key: 'getForBox',
-    value: function getForBox(boxKey) {
+    value: function getForBox (boxKey) {
       return this._s.Boxes.getThreads(boxKey);
     }
   }, {
     key: 'getOne',
-    value: function getOne(threadKey) {
+    value: function getOne (threadKey) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject20, threadKey));
     }
   }]);
@@ -562,7 +562,7 @@ var Threads = function () {
 }();
 
 var Tasks = function () {
-  function Tasks(s, c) {
+  function Tasks (s, c) {
     (0, _classCallCheck3.default)(this, Tasks);
 
     this._s = s;
@@ -571,27 +571,27 @@ var Tasks = function () {
 
   (0, _createClass3.default)(Tasks, [{
     key: 'getForBox',
-    value: function getForBox(boxKey) {
+    value: function getForBox (boxKey) {
       return this._s.Boxes.getTasks(boxKey);
     }
   }, {
     key: 'getOne',
-    value: function getOne(key) {
+    value: function getOne (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject21, key));
     }
   }, {
     key: 'create',
-    value: function create(boxKey, data) {
+    value: function create (boxKey, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject16, boxKey), data);
     }
   }, {
     key: 'update',
-    value: function update(key, data) {
+    value: function update (key, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject21, key), data);
     }
   }, {
     key: 'delete',
-    value: function _delete(key) {
+    value: function _delete (key) {
       return this._c.delete((0, _autoEncodeUri2.default)(_templateObject21, key));
     }
   }]);
@@ -599,7 +599,7 @@ var Tasks = function () {
 }();
 
 var Webhooks = function () {
-  function Webhooks(s, c) {
+  function Webhooks (s, c) {
     (0, _classCallCheck3.default)(this, Webhooks);
 
     this._s = s;
@@ -616,7 +616,7 @@ var Webhooks = function () {
 
   (0, _createClass3.default)(Webhooks, [{
     key: 'getForPipeline',
-    value: function getForPipeline(key) {
+    value: function getForPipeline (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject22, key));
     }
 
@@ -629,7 +629,7 @@ var Webhooks = function () {
 
   }, {
     key: 'getOne',
-    value: function getOne(key) {
+    value: function getOne (key) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject23, key));
     }
 
@@ -643,7 +643,7 @@ var Webhooks = function () {
 
   }, {
     key: 'create',
-    value: function create(key, data) {
+    value: function create (key, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject22, key), data);
     }
 
@@ -656,7 +656,7 @@ var Webhooks = function () {
 
   }, {
     key: 'delete',
-    value: function _delete(key) {
+    value: function _delete (key) {
       return this._c.delete((0, _autoEncodeUri2.default)(_templateObject23, key));
     }
 
@@ -670,7 +670,7 @@ var Webhooks = function () {
 
   }, {
     key: 'update',
-    value: function update(key, data) {
+    value: function update (key, data) {
       return this._c.post((0, _autoEncodeUri2.default)(_templateObject23, key), data);
     }
   }]);
@@ -678,7 +678,7 @@ var Webhooks = function () {
 }();
 
 var Streak = exports.Streak = function () {
-  function Streak(authKey) {
+  function Streak (authKey) {
     (0, _classCallCheck3.default)(this, Streak);
 
     this._c = new ConnHelper(authKey);
@@ -706,7 +706,7 @@ var Streak = exports.Streak = function () {
 
   (0, _createClass3.default)(Streak, [{
     key: 'search',
-    value: function search(query) {
+    value: function search (query) {
       return this._c.get((0, _autoEncodeUri2.default)(_templateObject24, query));
     }
   }]);
