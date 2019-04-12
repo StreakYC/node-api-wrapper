@@ -418,7 +418,7 @@ var Boxes = function () {
   }, {
     key: 'create',
     value: function create (pipeKey, data) {
-      return this._c.put((0, _autoEncodeUri2.default)(_templateObject2, pipeKey), data);
+      return this._c.post((0, _autoEncodeUri2.default)(_templateObject2, pipeKey), data);
     }
   }, {
     key: 'delete',
