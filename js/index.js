@@ -85,8 +85,10 @@ var ConnHelper = function () {
       var prefix = '/api/v1/';
 
       // If the requested resource is a Task, then use the V2 of the API
-      if (path.indexOf('tasks') > -1) prefix = '/api/v2/';
-      if (path.indexOf('webhooks') > -1) prefix = '/api/v2/';
+      var v2prefix = '/api/v2/'
+      if (path.indexOf('tasks') > -1) prefix = v2prefix;
+      if (path.indexOf('webhooks') > -1) prefix = v2prefix;
+      if (path.indexOf('boxes') > -1 && method === 'post') prefix = v2prefix;
 
       return {
         method: method, headers: headers, encoding: encoding,
