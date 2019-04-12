@@ -8,17 +8,23 @@ import aeu from './auto-encode-uri';
 class ConnHelper {
   _authKey: string;
 
-  constructor(authKey: string) {
+  constructor (authKey: string) {
     this._authKey = authKey;
   }
 
-  _getRequestOptions(method: string, path: string, headers: Object={}, encoding: ?string='utf8'): Object {
+  _getRequestOptions (method: string, path: string, headers: Object = {}, encoding: ?string = 'utf8'): Object {
     // By default we request the V1 of the API
     let prefix = '/api/v1/';
 
     // If the requested resource is a Task, then use the V2 of the API
     if (path.indexOf('tasks') > -1) prefix = '/api/v2/';
     if (path.indexOf('webhooks') > -1) prefix = '/api/v2/';
+
+    // If the requested resource is a Task, then use the V2 of the API
+    const v2prefix = '/api/v2/';
+    if (path.indexOf('tasks') > -1) prefix = v2prefix;
+    if (path.indexOf('webhooks') > -1) prefix = v2prefix;
+    if (path.indexOf('boxes') > -1 && method.toLowerCase() === 'post') prefix = v2prefix;
 
     return {
       method, headers, encoding,
@@ -28,7 +34,7 @@ class ConnHelper {
     };
   }
 
-  _parseResponse(response: https.IncomingMessage): Promise<any> {
+  _parseResponse (response: https.IncomingMessage): Promise<any> {
     return new Promise((resolve, reject) => {
       const strs: string[] = [];
       response.on('data', (chunk: string) => {
@@ -64,7 +70,7 @@ class ConnHelper {
     });
   }
 
-  _plainResponse(response: https.IncomingMessage): Promise<Buffer> {
+  _plainResponse (response: https.IncomingMessage): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
       response.on('data', (chunk: Buffer) => {
@@ -91,7 +97,7 @@ class ConnHelper {
     });
   }
 
-  get(path: string): Promise<Object> {
+  get (path: string): Promise<Object> {
     return new Promise((resolve, reject) => {
       const opts = this._getRequestOptions('GET', path);
       const request = https.request(opts, res => {
@@ -102,7 +108,7 @@ class ConnHelper {
     });
   }
 
-  getNoParse(path: string): Promise<Buffer> {
+  getNoParse (path: string): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const opts = this._getRequestOptions('GET', path, undefined, null);
       const request = https.request(opts, res => {
@@ -113,7 +119,7 @@ class ConnHelper {
     });
   }
 
-  put(path: string, data: Object): Promise<Object> {
+  put (path: string, data: Object): Promise<Object> {
     return new Promise((resolve, reject) => {
       const dstr = querystring.stringify(data);
       const opts = this._getRequestOptions('PUT', path + '?' + dstr);
@@ -125,7 +131,7 @@ class ConnHelper {
     });
   }
 
-  delete(path: string): Promise<any> {
+  delete (path: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const opts = this._getRequestOptions('DELETE', path);
       const request = https.request(opts, res => {
@@ -136,9 +142,9 @@ class ConnHelper {
     });
   }
 
-  post(path: string, data: any): Promise<Object> {
+  post (path: string, data: any): Promise<Object> {
     return new Promise((resolve, reject) => {
-      const send = querystring.stringify({json:JSON.stringify(data)});
+      const send = querystring.stringify({ json: JSON.stringify(data) });
       const opts = this._getRequestOptions('POST', path, {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': send.length
@@ -156,11 +162,13 @@ class ConnHelper {
 class Me {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  get() {
+
+  get () {
     return this._c.get('users/me');
   }
 }
@@ -170,87 +178,108 @@ class Pipelines {
   _c: ConnHelper;
   Stages: PipelineStages;
   Fields: PipelineFields;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
     this.Stages = new PipelineStages(s, c);
     this.Fields = new PipelineFields(s, c);
   }
-  getAll() {
+
+  getAll () {
     return this._c.get('pipelines');
   }
-  getOne(key: string) {
-    return this._c.get(aeu `pipelines/${key}`);
+
+  getOne (key: string) {
+    return this._c.get(aeu`pipelines/${key}`);
   }
-  getBoxes(key: string) {
-    return this._c.get(aeu `pipelines/${key}/boxes`);
+
+  getBoxes (key: string) {
+    return this._c.get(aeu`pipelines/${key}/boxes`);
   }
+
   getBoxesInStage (key: string, stageKey: string) {
-    return this._c.get(aeu `pipelines/${key}/boxes?stageKey=${stageKey}`);
+    return this._c.get(aeu`pipelines/${key}/boxes?stageKey=${stageKey}`);
   }
-  create(data: Object) {
+
+  create (data: Object) {
     return this._c.put('pipelines', data);
   }
-  delete(key: string) {
-    return this._c.delete(aeu `pipelines/${key}`);
+
+  delete (key: string) {
+    return this._c.delete(aeu`pipelines/${key}`);
   }
-  update(data: Object) {
-    return this._c.post(aeu `pipelines/${data.key}`, data);
+
+  update (data: Object) {
+    return this._c.post(aeu`pipelines/${data.key}`, data);
   }
-  getFeed(key: string, detailLevel: ?string) {
+
+  getFeed (key: string, detailLevel: ?string) {
     let qs = '';
     if (detailLevel) {
-      qs += '?' + querystring.stringify({detailLevel});
+      qs += '?' + querystring.stringify({ detailLevel });
     }
-    return this._c.get(aeu `pipelines/${key}/newsfeed` + qs);
+    return this._c.get(aeu`pipelines/${key}/newsfeed` + qs);
   }
 }
 
 class PipelineStages {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  getAll(pipeKey: string) {
-    return this._c.get(aeu `pipelines/${pipeKey}/stages`);
+
+  getAll (pipeKey: string) {
+    return this._c.get(aeu`pipelines/${pipeKey}/stages`);
   }
-  getOne(pipeKey: string, key: string) {
-    return this._c.get(aeu `pipelines/${pipeKey}/stages/${key}`);
+
+  getOne (pipeKey: string, key: string) {
+    return this._c.get(aeu`pipelines/${pipeKey}/stages/${key}`);
   }
-  create(pipeKey: string, data: Object) {
-    return this._c.put(aeu `pipelines/${pipeKey}/stages`, data);
+
+  create (pipeKey: string, data: Object) {
+    return this._c.put(aeu`pipelines/${pipeKey}/stages`, data);
   }
-  delete(pipeKey: string, key: string) {
-    return this._c.delete(aeu `pipelines/${pipeKey}/stages/${key}`);
+
+  delete (pipeKey: string, key: string) {
+    return this._c.delete(aeu`pipelines/${pipeKey}/stages/${key}`);
   }
-  update(pipeKey: string, data: Object) {
-    return this._c.post(aeu `pipelines/${pipeKey}/stages/${data.key}`, data);
+
+  update (pipeKey: string, data: Object) {
+    return this._c.post(aeu`pipelines/${pipeKey}/stages/${data.key}`, data);
   }
 }
 
 class PipelineFields {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  getAll(pipeKey: string) {
-    return this._c.get(aeu `pipelines/${pipeKey}/fields`);
+
+  getAll (pipeKey: string) {
+    return this._c.get(aeu`pipelines/${pipeKey}/fields`);
   }
-  getOne(pipeKey: string, key: string) {
-    return this._c.get(aeu `pipelines/${pipeKey}/fields/${key}`);
+
+  getOne (pipeKey: string, key: string) {
+    return this._c.get(aeu`pipelines/${pipeKey}/fields/${key}`);
   }
-  create(pipeKey: string, data: Object) {
-    return this._c.put(aeu `pipelines/${pipeKey}/fields`, data);
+
+  create (pipeKey: string, data: Object) {
+    return this._c.put(aeu`pipelines/${pipeKey}/fields`, data);
   }
-  delete(pipeKey: string, key: string) {
-    return this._c.delete(aeu `pipelines/${pipeKey}/fields/${key}`);
+
+  delete (pipeKey: string, key: string) {
+    return this._c.delete(aeu`pipelines/${pipeKey}/fields/${key}`);
   }
-  update(pipeKey: string, data: Object) {
-    return this._c.post(aeu `pipelines/${pipeKey}/fields/${data.key}`, data);
+
+  update (pipeKey: string, data: Object) {
+    return this._c.post(aeu`pipelines/${pipeKey}/fields/${data.key}`, data);
   }
 }
 
@@ -258,142 +287,176 @@ class Boxes {
   _s: Streak;
   _c: ConnHelper;
   Fields: BoxFields;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
     this.Fields = new BoxFields(s, c);
   }
-  getAll() {
+
+  getAll () {
     return this._c.get('boxes');
   }
-  getForPipeline(key: string) {
+
+  getForPipeline (key: string) {
     return this._s.Pipelines.getBoxes(key);
   }
-  getOne(key: string) {
-    return this._c.get(aeu `boxes/${key}`);
+
+  getOne (key: string) {
+    return this._c.get(aeu`boxes/${key}`);
   }
-  create(pipeKey, data) {
-    return this._c.put(aeu `pipelines/${pipeKey}/boxes`, data);
+
+  create (pipeKey, data) {
+    return this._c.post(aeu`pipelines/${pipeKey}/boxes`, data);
   }
-  delete(key: string) {
-    return this._c.delete(aeu `boxes/${key}`);
+
+  delete (key: string) {
+    return this._c.delete(aeu`boxes/${key}`);
   }
-  update(data: Object) {
-    return this._c.post(aeu `boxes/${data.key}`, data);
+
+  update (data: Object) {
+    return this._c.post(aeu`boxes/${data.key}`, data);
   }
-  getFields(key: string) {
-    return this._c.get(aeu `boxes/${key}/fields`);
+
+  getFields (key: string) {
+    return this._c.get(aeu`boxes/${key}/fields`);
   }
-  getReminders(key: string) {
-    return this._c.get(aeu `boxes/${key}/reminders`);
+
+  getReminders (key: string) {
+    return this._c.get(aeu`boxes/${key}/reminders`);
   }
-  getComments(key: string) {
-    return this._c.get(aeu `boxes/${key}/comments`);
+
+  getComments (key: string) {
+    return this._c.get(aeu`boxes/${key}/comments`);
   }
+
   // deprecated method
-  createComment(key: string, data) {
-    return this._c.put(aeu `boxes/${key}/comments`, data);
+  createComment (key: string, data) {
+    return this._c.put(aeu`boxes/${key}/comments`, data);
   }
-  postComment(key: string, message: string) {
-    return this._c.put(aeu `boxes/${key}/comments`, {message});
+
+  postComment (key: string, message: string) {
+    return this._c.put(aeu`boxes/${key}/comments`, { message });
   }
-  getFiles(key: string) {
-    return this._c.get(aeu `boxes/${key}/files`);
+
+  getFiles (key: string) {
+    return this._c.get(aeu`boxes/${key}/files`);
   }
-  getThreads(key: string) {
-    return this._c.get(aeu `boxes/${key}/threads`);
+
+  getThreads (key: string) {
+    return this._c.get(aeu`boxes/${key}/threads`);
   }
-  getFeed(key: string, detailLevel: ?string) {
+
+  getFeed (key: string, detailLevel: ?string) {
     let qs = '';
     if (detailLevel) {
-      qs += '?' + querystring.stringify({detailLevel});
+      qs += '?' + querystring.stringify({ detailLevel });
     }
-    return this._c.get(aeu `boxes/${key}/newsfeed` + qs);
+    return this._c.get(aeu`boxes/${key}/newsfeed` + qs);
   }
-  getTasks(key: string) {
-    return this._c.get(aeu `boxes/${key}/tasks`);
+
+  getTasks (key: string) {
+    return this._c.get(aeu`boxes/${key}/tasks`);
   }
 }
 
 class BoxFields {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  getForBox(key: string) {
+
+  getForBox (key: string) {
     return this._s.Boxes.getFields(key);
   }
-  getOne(boxKey: string, key: string) {
-    return this._c.get(aeu `boxes/${boxKey}/fields/${key}`);
+
+  getOne (boxKey: string, key: string) {
+    return this._c.get(aeu`boxes/${boxKey}/fields/${key}`);
   }
-  update(boxKey: string, data: Object) {
-    return this._c.post(aeu `boxes/${boxKey}/fields/${data.key}`, data);
+
+  update (boxKey: string, data: Object) {
+    return this._c.post(aeu`boxes/${boxKey}/fields/${data.key}`, data);
   }
 }
 
 class Files {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  getForBox(key: string) {
+
+  getForBox (key: string) {
     return this._s.Boxes.getFiles(key);
   }
-  getOne(key: string) {
-    return this._c.get(aeu `files/${key}`);
+
+  getOne (key: string) {
+    return this._c.get(aeu`files/${key}`);
   }
-  getContents(key: string) {
-    return this._c.getNoParse(aeu `files/${key}/contents`);
+
+  getContents (key: string) {
+    return this._c.getNoParse(aeu`files/${key}/contents`);
   }
 }
 
 class Threads {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  getForBox(boxKey: string) {
+
+  getForBox (boxKey: string) {
     return this._s.Boxes.getThreads(boxKey);
   }
-  getOne(threadKey: string) {
-    return this._c.get(aeu `threads/${threadKey}`);
+
+  getOne (threadKey: string) {
+    return this._c.get(aeu`threads/${threadKey}`);
   }
 }
 
 class Tasks {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
-  getForBox(boxKey: string) {
+
+  getForBox (boxKey: string) {
     return this._s.Boxes.getTasks(boxKey);
   }
-  getOne(key: string) {
-    return this._c.get(aeu `tasks/${key}`);
+
+  getOne (key: string) {
+    return this._c.get(aeu`tasks/${key}`);
   }
-  create(boxKey: string, data: Object) {
-    return this._c.post(aeu `boxes/${boxKey}/tasks`, data);
+
+  create (boxKey: string, data: Object) {
+    return this._c.post(aeu`boxes/${boxKey}/tasks`, data);
   }
-  update(key: string, data: Object) {
-    return this._c.post(aeu `tasks/${key}`, data);
+
+  update (key: string, data: Object) {
+    return this._c.post(aeu`tasks/${key}`, data);
   }
-  delete(key: string) {
-    return this._c.delete(aeu `tasks/${key}`);
+
+  delete (key: string) {
+    return this._c.delete(aeu`tasks/${key}`);
   }
 }
 
 class Webhooks {
   _s: Streak;
   _c: ConnHelper;
-  constructor(s: Streak, c: ConnHelper) {
+
+  constructor (s: Streak, c: ConnHelper) {
     this._s = s;
     this._c = c;
   }
@@ -404,8 +467,8 @@ class Webhooks {
    * @param key Pipeline key
    * @return {Promise.<Object>}
    */
-  getForPipeline(key: string) {
-    return this._c.get(aeu `pipelines/${key}/webhooks`);
+  getForPipeline (key: string) {
+    return this._c.get(aeu`pipelines/${key}/webhooks`);
   }
 
   /**
@@ -414,8 +477,8 @@ class Webhooks {
    * @param key Webhook key
    * @return {Promise.<Object>}
    */
-  getOne(key: string) {
-    return this._c.get(aeu `webhooks/${key}`);
+  getOne (key: string) {
+    return this._c.get(aeu`webhooks/${key}`);
   }
 
   /**
@@ -425,8 +488,8 @@ class Webhooks {
    * @param data
    * @return {Promise.<Object>}
    */
-  create(key: string, data: Object) {
-    return this._c.post(aeu `pipelines/${key}/webhooks`, data);
+  create (key: string, data: Object) {
+    return this._c.post(aeu`pipelines/${key}/webhooks`, data);
   }
 
   /**
@@ -435,8 +498,8 @@ class Webhooks {
    * @param key Webhook key
    * @return {Promise.<Object>}
    */
-  delete(key: string) {
-    return this._c.delete(aeu `webhooks/${key}`);
+  delete (key: string) {
+    return this._c.delete(aeu`webhooks/${key}`);
   }
 
   /**
@@ -446,8 +509,8 @@ class Webhooks {
    * @param data
    * @return {Promise.<Object>}
    */
-  update(key: string, data: Object) {
-    return this._c.post(aeu `webhooks/${key}`, data);
+  update (key: string, data: Object) {
+    return this._c.post(aeu`webhooks/${key}`, data);
   }
 }
 
@@ -461,7 +524,7 @@ export class Streak {
   Tasks: Tasks;
   Webhooks: Webhooks;
 
-  constructor(authKey: string) {
+  constructor (authKey: string) {
     this._c = new ConnHelper(authKey);
     this.Me = new Me(this, this._c);
     this.Pipelines = new Pipelines(this, this._c);
@@ -485,7 +548,7 @@ export class Streak {
     this.Webhooks.taskDue = 'TASK_DUE';
   }
 
-  search(query: string): Promise<Object> {
-    return this._c.get(aeu `search?query=${query}`);
+  search (query: string): Promise<Object> {
+    return this._c.get(aeu`search?query=${query}`);
   }
 }
