@@ -15,16 +15,18 @@ class ConnHelper {
   _getRequestOptions (method: string, path: string, headers: Object = {}, encoding: ?string = 'utf8'): Object {
     // By default we request the V1 of the API
     let prefix = '/api/v1/';
-
-    // If the requested resource is a Task, then use the V2 of the API
-    if (path.indexOf('tasks') > -1) prefix = '/api/v2/';
-    if (path.indexOf('webhooks') > -1) prefix = '/api/v2/';
-
     // If the requested resource is a Task, then use the V2 of the API
     const v2prefix = '/api/v2/';
-    if (path.indexOf('tasks') > -1) prefix = v2prefix;
-    if (path.indexOf('webhooks') > -1) prefix = v2prefix;
-    if (path.indexOf('boxes') > -1 && method.toLowerCase() === 'post') prefix = v2prefix;
+    const v2paths = [
+      'tasks',
+      'webhooks',
+      'boxes',
+      'teams',
+      'contacts'
+    ];
+    for (let v2p of v2paths) {
+      if (path.indexOf(v2p) > -1) prefix = v2prefix;
+    }
 
     return {
       method, headers, encoding,
@@ -514,6 +516,99 @@ class Webhooks {
   }
 }
 
+class Teams {
+  _s: Streak;
+  _c: ConnHelper;
+
+  constructor (s: Streak, c: ConnHelper) {
+    this._s = s;
+    this._c = c;
+  }
+
+  /**
+   * Get list of my teams
+   * @return {Promise<Object>}
+   */
+  getAll () {
+    return this._c.get(aeu`users/me/teams`);
+  }
+
+  /**
+   * Get a team
+   *
+   * @param key Team key
+   * @return {Promise<Object>}
+   */
+  getOne (key: string) {
+    return this._c.get(aeu`teams/${key}`);
+
+  }
+}
+
+class Contacts {
+  _s: Streak;
+  _c: ConnHelper;
+
+  constructor (s: Streak, c: ConnHelper) {
+    this._s = s;
+    this._c = c;
+  }
+
+  /**
+   * Get a contact
+   *
+   * @param key
+   * @return {Promise<Object>}
+   */
+  getOne (key: string) {
+    return this._c.get(aeu`contacts/${key}`);
+  }
+
+  /**
+   * Create a new contact
+   *
+   * @param key Team key
+   * @param data
+   * @return {Promise.<Object>}
+   */
+  create (key: string, data: Object) {
+    return this._c.post(aeu`teams/${key}/contacts`, data);
+  }
+
+  /**
+   * Delete a contact
+   *
+   * @param key Contact key
+   * @return {Promise.<Object>}
+   */
+  delete (key: string) {
+    return this._c.delete(aeu`contacts/${key}`);
+  }
+
+  /**
+   * Edit a contact
+   *
+   * @param key Contact key
+   * @param data
+   * @return {Promise.<Object>}
+   */
+  update (key: string, data: Object) {
+    return this._c.post(aeu`contacts/${key}`, data);
+  }
+
+  /**
+   * Add contacts to box
+   * @param key Box key to add contacts to
+   * @param data Array with contacts. E.g {contacts:[{<a contact>}]}
+   *
+   * @return {Promise<Object>}
+   */
+  addToBox (key: string, data: Array) {
+    return this._c.post(aeu`boxes/${key}`, data);
+  }
+
+}
+
 export class Streak {
   _c: ConnHelper;
   Me: Me;
@@ -523,6 +618,8 @@ export class Streak {
   Threads: Threads;
   Tasks: Tasks;
   Webhooks: Webhooks;
+  Teams: Teams;
+  Contacts: Contacts;
 
   constructor (authKey: string) {
     this._c = new ConnHelper(authKey);
@@ -533,6 +630,8 @@ export class Streak {
     this.Threads = new Threads(this, this._c);
     this.Tasks = new Tasks(this, this._c);
     this.Webhooks = new Webhooks(this, this._c);
+    this.Teams = new Teams(this, this._c);
+    this.Contacts = new Contacts(this, this._c);
 
     // constants for webhook event types
     this.Webhooks.boxCreate = 'BOX_CREATE';
