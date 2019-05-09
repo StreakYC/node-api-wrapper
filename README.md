@@ -82,6 +82,13 @@ All methods return promises.
     streak.Tasks.delete(taskKey);
     streak.Tasks.update(taskKey, data);
 
+    //webhooks
+    streak.Webhooks.getForPipeline(pipelineKey);
+    streak.Webhooks.getOne(webhookKey);
+    streak.Webhooks.create(pipelineKey, data);
+    streak.Webhooks.update(webhookKey, data);
+    streak.Webhooks.delete(webhookKey);
+    
     //search
     streak.search(query);
 
