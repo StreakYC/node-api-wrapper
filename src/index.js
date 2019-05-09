@@ -13,21 +13,7 @@ class ConnHelper {
   }
 
   _getRequestOptions (method: string, path: string, headers: Object = {}, encoding: ?string = 'utf8'): Object {
-    // By default we request the V1 of the API
-    let prefix = '/api/v1/';
-    // If the requested resource is a Task, then use the V2 of the API
-    const v2prefix = '/api/v2/';
-    const v2paths = [
-      'tasks',
-      'webhooks',
-      'boxes',
-      'teams',
-      'contacts'
-    ];
-    for (let v2p of v2paths) {
-      if (path.indexOf(v2p) > -1) prefix = v2prefix;
-    }
-
+    let prefix = '/api';
     return {
       method, headers, encoding,
       host: 'www.streak.com',
@@ -171,7 +157,7 @@ class Me {
   }
 
   get () {
-    return this._c.get('users/me');
+    return this._c.get('/v1/users/me');
   }
 }
 
@@ -189,31 +175,31 @@ class Pipelines {
   }
 
   getAll () {
-    return this._c.get('pipelines');
+    return this._c.get('/v1/pipelines');
   }
 
   getOne (key: string) {
-    return this._c.get(aeu`pipelines/${key}`);
+    return this._c.get(aeu`/v1/pipelines/${key}`);
   }
 
   getBoxes (key: string) {
-    return this._c.get(aeu`pipelines/${key}/boxes`);
+    return this._c.get(aeu`/v1/pipelines/${key}/boxes`);
   }
 
   getBoxesInStage (key: string, stageKey: string) {
-    return this._c.get(aeu`pipelines/${key}/boxes?stageKey=${stageKey}`);
+    return this._c.get(aeu`/v1/pipelines/${key}/boxes?stageKey=${stageKey}`);
   }
 
   create (data: Object) {
-    return this._c.put('pipelines', data);
+    return this._c.put('/v1/pipelines', data);
   }
 
   delete (key: string) {
-    return this._c.delete(aeu`pipelines/${key}`);
+    return this._c.delete(aeu`/v1/pipelines/${key}`);
   }
 
   update (data: Object) {
-    return this._c.post(aeu`pipelines/${data.key}`, data);
+    return this._c.post(aeu`/v1/pipelines/${data.key}`, data);
   }
 
   getFeed (key: string, detailLevel: ?string) {
@@ -221,7 +207,7 @@ class Pipelines {
     if (detailLevel) {
       qs += '?' + querystring.stringify({ detailLevel });
     }
-    return this._c.get(aeu`pipelines/${key}/newsfeed` + qs);
+    return this._c.get(aeu`/v1/pipelines/${key}/newsfeed` + qs);
   }
 }
 
@@ -235,23 +221,23 @@ class PipelineStages {
   }
 
   getAll (pipeKey: string) {
-    return this._c.get(aeu`pipelines/${pipeKey}/stages`);
+    return this._c.get(aeu`/v1/pipelines/${pipeKey}/stages`);
   }
 
   getOne (pipeKey: string, key: string) {
-    return this._c.get(aeu`pipelines/${pipeKey}/stages/${key}`);
+    return this._c.get(aeu`/v1/pipelines/${pipeKey}/stages/${key}`);
   }
 
   create (pipeKey: string, data: Object) {
-    return this._c.put(aeu`pipelines/${pipeKey}/stages`, data);
+    return this._c.put(aeu`/v1/pipelines/${pipeKey}/stages`, data);
   }
 
   delete (pipeKey: string, key: string) {
-    return this._c.delete(aeu`pipelines/${pipeKey}/stages/${key}`);
+    return this._c.delete(aeu`/v1/pipelines/${pipeKey}/stages/${key}`);
   }
 
   update (pipeKey: string, data: Object) {
-    return this._c.post(aeu`pipelines/${pipeKey}/stages/${data.key}`, data);
+    return this._c.post(aeu`/v1/pipelines/${pipeKey}/stages/${data.key}`, data);
   }
 }
 
@@ -265,23 +251,23 @@ class PipelineFields {
   }
 
   getAll (pipeKey: string) {
-    return this._c.get(aeu`pipelines/${pipeKey}/fields`);
+    return this._c.get(aeu`/v1/pipelines/${pipeKey}/fields`);
   }
 
   getOne (pipeKey: string, key: string) {
-    return this._c.get(aeu`pipelines/${pipeKey}/fields/${key}`);
+    return this._c.get(aeu`/v1/pipelines/${pipeKey}/fields/${key}`);
   }
 
   create (pipeKey: string, data: Object) {
-    return this._c.put(aeu`pipelines/${pipeKey}/fields`, data);
+    return this._c.put(aeu`/v1/pipelines/${pipeKey}/fields`, data);
   }
 
   delete (pipeKey: string, key: string) {
-    return this._c.delete(aeu`pipelines/${pipeKey}/fields/${key}`);
+    return this._c.delete(aeu`/v1/pipelines/${pipeKey}/fields/${key}`);
   }
 
   update (pipeKey: string, data: Object) {
-    return this._c.post(aeu`pipelines/${pipeKey}/fields/${data.key}`, data);
+    return this._c.post(aeu`/v1/pipelines/${pipeKey}/fields/${data.key}`, data);
   }
 }
 
@@ -297,7 +283,7 @@ class Boxes {
   }
 
   getAll () {
-    return this._c.get('boxes');
+    return this._c.get('/v1/boxes');
   }
 
   getForPipeline (key: string) {
@@ -305,48 +291,48 @@ class Boxes {
   }
 
   getOne (key: string) {
-    return this._c.get(aeu`boxes/${key}`);
+    return this._c.get(aeu`/v1/boxes/${key}`);
   }
 
   create (pipeKey, data) {
-    return this._c.post(aeu`pipelines/${pipeKey}/boxes`, data);
+    return this._c.post(aeu`/v2/pipelines/${pipeKey}/boxes`, data);
   }
 
   delete (key: string) {
-    return this._c.delete(aeu`boxes/${key}`);
+    return this._c.delete(aeu`/v1/boxes/${key}`);
   }
 
   update (data: Object) {
-    return this._c.post(aeu`boxes/${data.key}`, data);
+    return this._c.post(aeu`/v1/boxes/${data.key}`, data);
   }
 
   getFields (key: string) {
-    return this._c.get(aeu`boxes/${key}/fields`);
+    return this._c.get(aeu`/v1/boxes/${key}/fields`);
   }
 
   getReminders (key: string) {
-    return this._c.get(aeu`boxes/${key}/reminders`);
+    return this._c.get(aeu`/v1/boxes/${key}/reminders`);
   }
 
   getComments (key: string) {
-    return this._c.get(aeu`boxes/${key}/comments`);
+    return this._c.get(aeu`/v1/boxes/${key}/comments`);
   }
 
   // deprecated method
   createComment (key: string, data) {
-    return this._c.put(aeu`boxes/${key}/comments`, data);
+    return this._c.put(aeu`/v1/boxes/${key}/comments`, data);
   }
 
   postComment (key: string, message: string) {
-    return this._c.put(aeu`boxes/${key}/comments`, { message });
+    return this._c.put(aeu`/v1/boxes/${key}/comments`, { message });
   }
 
   getFiles (key: string) {
-    return this._c.get(aeu`boxes/${key}/files`);
+    return this._c.get(aeu`/v1/boxes/${key}/files`);
   }
 
   getThreads (key: string) {
-    return this._c.get(aeu`boxes/${key}/threads`);
+    return this._c.get(aeu`/v1/boxes/${key}/threads`);
   }
 
   getFeed (key: string, detailLevel: ?string) {
@@ -354,11 +340,11 @@ class Boxes {
     if (detailLevel) {
       qs += '?' + querystring.stringify({ detailLevel });
     }
-    return this._c.get(aeu`boxes/${key}/newsfeed` + qs);
+    return this._c.get(aeu`/v1/boxes/${key}/newsfeed` + qs);
   }
 
   getTasks (key: string) {
-    return this._c.get(aeu`boxes/${key}/tasks`);
+    return this._c.get(aeu`/v2/boxes/${key}/tasks`);
   }
 }
 
@@ -376,11 +362,11 @@ class BoxFields {
   }
 
   getOne (boxKey: string, key: string) {
-    return this._c.get(aeu`boxes/${boxKey}/fields/${key}`);
+    return this._c.get(aeu`/v1/boxes/${boxKey}/fields/${key}`);
   }
 
   update (boxKey: string, data: Object) {
-    return this._c.post(aeu`boxes/${boxKey}/fields/${data.key}`, data);
+    return this._c.post(aeu`/v1/boxes/${boxKey}/fields/${data.key}`, data);
   }
 }
 
@@ -398,11 +384,11 @@ class Files {
   }
 
   getOne (key: string) {
-    return this._c.get(aeu`files/${key}`);
+    return this._c.get(aeu`/v1/files/${key}`);
   }
 
   getContents (key: string) {
-    return this._c.getNoParse(aeu`files/${key}/contents`);
+    return this._c.getNoParse(aeu`/v1/files/${key}/contents`);
   }
 }
 
@@ -420,7 +406,7 @@ class Threads {
   }
 
   getOne (threadKey: string) {
-    return this._c.get(aeu`threads/${threadKey}`);
+    return this._c.get(aeu`/v1/threads/${threadKey}`);
   }
 }
 
@@ -438,19 +424,19 @@ class Tasks {
   }
 
   getOne (key: string) {
-    return this._c.get(aeu`tasks/${key}`);
+    return this._c.get(aeu`/v2/tasks/${key}`);
   }
 
   create (boxKey: string, data: Object) {
-    return this._c.post(aeu`boxes/${boxKey}/tasks`, data);
+    return this._c.post(aeu`/v2/boxes/${boxKey}/tasks`, data);
   }
 
   update (key: string, data: Object) {
-    return this._c.post(aeu`tasks/${key}`, data);
+    return this._c.post(aeu`/v2/tasks/${key}`, data);
   }
 
   delete (key: string) {
-    return this._c.delete(aeu`tasks/${key}`);
+    return this._c.delete(aeu`/v2/tasks/${key}`);
   }
 }
 
@@ -470,7 +456,7 @@ class Webhooks {
    * @return {Promise.<Object>}
    */
   getForPipeline (key: string) {
-    return this._c.get(aeu`pipelines/${key}/webhooks`);
+    return this._c.get(aeu`/v2/pipelines/${key}/webhooks`);
   }
 
   /**
@@ -480,7 +466,7 @@ class Webhooks {
    * @return {Promise.<Object>}
    */
   getOne (key: string) {
-    return this._c.get(aeu`webhooks/${key}`);
+    return this._c.get(aeu`/v2/webhooks/${key}`);
   }
 
   /**
@@ -491,7 +477,7 @@ class Webhooks {
    * @return {Promise.<Object>}
    */
   create (key: string, data: Object) {
-    return this._c.post(aeu`pipelines/${key}/webhooks`, data);
+    return this._c.post(aeu`/v2/pipelines/${key}/webhooks`, data);
   }
 
   /**
@@ -501,7 +487,7 @@ class Webhooks {
    * @return {Promise.<Object>}
    */
   delete (key: string) {
-    return this._c.delete(aeu`webhooks/${key}`);
+    return this._c.delete(aeu`/v2/webhooks/${key}`);
   }
 
   /**
@@ -512,7 +498,7 @@ class Webhooks {
    * @return {Promise.<Object>}
    */
   update (key: string, data: Object) {
-    return this._c.post(aeu`webhooks/${key}`, data);
+    return this._c.post(aeu`/v2/webhooks/${key}`, data);
   }
 }
 
@@ -530,7 +516,7 @@ class Teams {
    * @return {Promise<Object>}
    */
   getAll () {
-    return this._c.get(aeu`users/me/teams`);
+    return this._c.get(aeu`/v2/users/me/teams`);
   }
 
   /**
@@ -540,7 +526,7 @@ class Teams {
    * @return {Promise<Object>}
    */
   getOne (key: string) {
-    return this._c.get(aeu`teams/${key}`);
+    return this._c.get(aeu`/v2/teams/${key}`);
 
   }
 }
@@ -561,7 +547,7 @@ class Contacts {
    * @return {Promise<Object>}
    */
   getOne (key: string) {
-    return this._c.get(aeu`contacts/${key}`);
+    return this._c.get(aeu`/v2/contacts/${key}`);
   }
 
   /**
@@ -572,17 +558,7 @@ class Contacts {
    * @return {Promise.<Object>}
    */
   create (key: string, data: Object) {
-    return this._c.post(aeu`teams/${key}/contacts`, data);
-  }
-
-  /**
-   * Delete a contact
-   *
-   * @param key Contact key
-   * @return {Promise.<Object>}
-   */
-  delete (key: string) {
-    return this._c.delete(aeu`contacts/${key}`);
+    return this._c.post(aeu`/v2/teams/${key}/contacts`, data);
   }
 
   /**
@@ -593,7 +569,17 @@ class Contacts {
    * @return {Promise.<Object>}
    */
   update (key: string, data: Object) {
-    return this._c.post(aeu`contacts/${key}`, data);
+    return this._c.post(aeu`/v2/contacts/${key}`, data);
+  }
+
+  /**
+   * Delete a contact
+   *
+   * @param key Contact key
+   * @return {Promise.<Object>}
+   */
+  delete (key: string) {
+    return this._c.delete(aeu`/v2/contacts/${key}`);
   }
 
   /**
@@ -604,7 +590,7 @@ class Contacts {
    * @return {Promise<Object>}
    */
   addToBox (key: string, data: Array) {
-    return this._c.post(aeu`boxes/${key}`, data);
+    return this._c.post(aeu`/v1/boxes/${key}`, data);
   }
 
 }
@@ -648,6 +634,6 @@ export class Streak {
   }
 
   search (query: string): Promise<Object> {
-    return this._c.get(aeu`search?query=${query}`);
+    return this._c.get(aeu`/v1/search?query=${query}`);
   }
 }
