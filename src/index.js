@@ -17,7 +17,7 @@ class ConnHelper {
     let prefix = '/api/v1/';
 
     // If the requested resource is a Task, then use the V2 of the API
-    if (path.indexOf('tasks') > -1) prefix = '/api/v2';
+    if (path.indexOf('tasks') > -1) prefix = '/api/v2/';
 
     return {
       method, headers, encoding,
