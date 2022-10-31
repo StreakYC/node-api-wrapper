@@ -21,7 +21,7 @@ class ConnHelper {
 
     return {
       method, headers, encoding,
-      host: 'mailfoogae.appspot.com',
+      host: 'api.streak.com',
       path: prefix + path,
       auth: this._authKey
     };
